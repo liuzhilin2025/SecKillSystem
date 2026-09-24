@@ -1,0 +1,41 @@
+spring:
+  # 本地开发环境 MySQL 数据源配置
+  datasource:
+    # 连接地址：数据库名为 seckill（1.1 小节中创建的）
+    url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    # 数据库用户名
+    username: root
+    # 数据库密码（改成你自己的密码）
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    # 数据库驱动类名
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # HikariCP 连接池配置
+    hikari:
+      # 连接池名称
+      pool-name: SeckillHikariPool
+      # 最小空闲连接数
+      minimum-idle: 10
+      # 最大连接数
+      maximum-pool-size: 50
+      # 空闲连接超时时间（毫秒）
+      idle-timeout: 300000
+      # 连接最大存活时间（毫秒）
+      max-lifetime: 900000
+      # 获取连接超时时间（毫秒）
+      connection-timeout: 30000
+      # 连接测试语句
+      connection-test-query: SELECT 1
+
+# MyBatis-Plus 开发环境专属配置
+mybatis-plus:
+  # classpath* 带星号，才能扫到 seckill-common jar 里的 xml
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.practice.flashsale.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    # 开发期打印 SQL，压测和上线一定要注释掉
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto

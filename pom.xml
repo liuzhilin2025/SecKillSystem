@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.practice.flashsale</groupId>
+    <artifactId>FlashSaleSystem</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>FlashSaleSystem</name>
+    <description>秒杀系统 By 犬小哈</description>
+
+    <packaging>pom</packaging>
+
+    <!-- 子模块管理 -->
+    <modules>
+        <!-- 启动入口 -->
+        <module>seckill-app</module>
+        <!-- 公共模块   -->
+        <module>seckill-common</module>
+        <!-- 用户模块 -->
+        <module>seckill-user</module>
+        <!-- 商品模块 -->
+        <module>seckill-goods</module>
+        <!-- 订单模块 -->
+        <module>seckill-order</module>
+    </modules>
+
+    <properties>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Spring Boot 未管理的三方依赖才需要在这里声明版本 -->
+        <mybatis-plus.version>3.5.10.1</mybatis-plus.version>
+    </properties>
+
+    <!-- 统一依赖管理 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- 公共模块 -->
+            <dependency>
+                <groupId>com.practice.flashsale</groupId>
+                <artifactId>seckill-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 用户模块 -->
+            <dependency>
+                <groupId>com.practice.flashsale</groupId>
+                <artifactId>seckill-user</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 商品模块 -->
+            <dependency>
+                <groupId>com.practice.flashsale</groupId>
+                <artifactId>seckill-goods</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 订单模块 -->
+            <dependency>
+                <groupId>com.practice.flashsale</groupId>
+                <artifactId>seckill-order</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!--  MyBatis-Plus  -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-jsqlparser</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!-- 代码生成器（只在 test 作用域使用） -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!-- 模板引擎：Boot 已管理 freemarker 版本，无需写 version -->
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- 统一插件管理 -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
