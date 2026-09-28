@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Log4j2 全异步日志配置 -->
+<Configuration status="WARN" monitorInterval="30">
+    <!-- 全局属性 -->
+    <Properties>
+        <!-- 日志输出格式（控制台带彩色高亮） -->
+        <Property name="LOG_PATTERN">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%-5level} [%t] %cyan{%c{1.}} : %msg%n
+        </Property>
+        <!-- 日志文件输出格式（不带颜色代码，方便日志收集系统解析） -->
+        <Property name="LOG_FILE_PATTERN">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] %c{1.} : %msg%n
+        </Property>
+        <!-- 日志存放路径 -->
+        <Property name="LOG_PATH">logs</Property>
+        <!-- 应用名称（用于日志文件名前缀） -->
+        <Property name="APP_NAME">xiaoha-seckill</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- 控制台输出 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+        </Console>
+
+        <!-- INFO 级别日志文件（滚动） -->
+        <RollingRandomAccessFile name="InfoFile"
+                                 fileName="${LOG_PATH}/${APP_NAME}-info.log"
+                                 filePattern="${LOG_PATH}/${APP_NAME}-info.%d{yyyy-MM-dd}.%i.log.gz">
+            <Filters>
+                <!-- 只记录 INFO 及以上级别，排除 ERROR 级别 -->
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout pattern="${LOG_FILE_PATTERN}" />
+            <Policies>
+                <!-- 按天滚动 -->
+                <TimeBasedTriggeringPolicy interval="1" />
+                <!-- 单个文件最大 50MB -->
+                <SizeBasedTriggeringPolicy size="50MB" />
+            </Policies>
+            <!-- 默认滚动策略：按天+大小双维度，保留 30 天 -->
+            <DefaultRolloverStrategy max="30">
+                <Delete basePath="${LOG_PATH}" maxDepth="1">
+                    <IfFileName glob="${APP_NAME}-info.*.log.gz" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+
+        <!-- ERROR 级别日志文件（滚动） -->
+        <RollingRandomAccessFile name="ErrorFile"
+                                 fileName="${LOG_PATH}/${APP_NAME}-error.log"
+                                 filePattern="${LOG_PATH}/${APP_NAME}-error.%d{yyyy-MM-dd}.%i.log.gz">
+            <Filters>
+                <!-- 只记录 ERROR 级别 -->
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${LOG_FILE_PATTERN}" />
+            <Policies>
+                <!-- 按天滚动 -->
+                <TimeBasedTriggeringPolicy interval="1" />
+                <!-- 单个文件最大 50MB -->
+                <SizeBasedTriggeringPolicy size="50MB" />
+            </Policies>
+            <!-- 默认滚动策略：按天+大小双维度，保留 30 天 -->
+            <DefaultRolloverStrategy max="30">
+                <Delete basePath="${LOG_PATH}" maxDepth="1">
+                    <IfFileName glob="${APP_NAME}-error.*.log.gz" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- dev 环境：控制台 + 文件 -->
+        <SpringProfile name="dev">
+            <Root level="INFO">
+                <AppenderRef ref="Console" />
+                <AppenderRef ref="InfoFile" />
+                <AppenderRef ref="ErrorFile" />
+            </Root>
+        </SpringProfile>
+
+        <!-- prod 环境：仅文件，不输出到控制台 -->
+        <SpringProfile name="prod">
+            <Root level="INFO">
+                <AppenderRef ref="InfoFile" />
+                <AppenderRef ref="ErrorFile" />
+            </Root>
+        </SpringProfile>
+    </Loggers>
+</Configuration>

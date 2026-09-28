@@ -22,20 +22,20 @@ public class CodeGenerator {
                     + "&useSSL=false&allowPublicKeyRetrieval=true"
                     + "&remarks=true&useInformationSchema=true";   // 这两个参数让生成器能读到表注释
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "aR2?RZmW8YzU";
 
     /** 输出目录（路径写死最简单，按你的实际路径改） */
     private static final String JAVA_DIR =
             "D:/java_practice/FlashSaleSystem/seckill-common/src/main/java";
     private static final String XML_DIR =
-            "D:/java_practice/FlashSaleSystem/seckill-common/src/main/resources/mapper";
+            "D:/java_practice/FlashSaleSystem/seckill-common/src/main/java/mapper";
 
     public static void main(String[] args) {
         FastAutoGenerator.create(URL, USERNAME, PASSWORD)
 
                 // ---------- 全局配置 ----------
                 .globalConfig(builder -> builder
-                        .author("你的名字")
+                        .author("沃淇淋")
                         .outputDir(JAVA_DIR)
                         .commentDate("yyyy-MM-dd")
                         .disableOpenDir()                 // 生成完不自动弹目录
@@ -54,11 +54,9 @@ public class CodeGenerator {
 
                 // ---------- 包配置 ----------
                 .packageConfig(builder -> builder
-                        .parent("com.practice.flashsale")
+                        .parent("com.practice.flashsale.common")
                         .entity("entity")
                         .mapper("mapper")
-                        .service("service")
-                        .serviceImpl("service.impl")
                         .xml("mapper")
                         .pathInfo(Collections.singletonMap(OutputFile.xml, XML_DIR))
                 )
@@ -66,8 +64,7 @@ public class CodeGenerator {
                 // ---------- 策略配置 ----------
                 .strategyConfig(builder -> builder
                                 // 要生成的表
-                                .addInclude("t_user", "t_goods", "t_seckill_activity",
-                                        "t_seckill_goods", "t_seckill_order", "t_pay_order")
+                                .addInclude("t_user")
                                 // 生成时去掉表前缀：t_user -> User
                                 .addTablePrefix("t_")
 

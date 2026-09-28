@@ -40,6 +40,7 @@
 
         <!-- Spring Boot 未管理的三方依赖才需要在这里声明版本 -->
         <mybatis-plus.version>3.5.10.1</mybatis-plus.version>
+        <disruptor.version>3.4.4</disruptor.version>
     </properties>
 
     <!-- 统一依赖管理 -->
@@ -93,6 +94,13 @@
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker</artifactId>
                 <version>${freemarker.version}</version>
+            </dependency>
+
+            <!-- Disruptor 高性能队列（Log4j2 异步日志需要） -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

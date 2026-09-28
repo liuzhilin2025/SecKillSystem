@@ -6,7 +6,7 @@ spring:
     # 数据库用户名
     username: root
     # 数据库密码（改成你自己的密码）
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    password: aR2?RZmW8YzU
     # 数据库驱动类名
     driver-class-name: com.mysql.cj.jdbc.Driver
     # HikariCP 连接池配置
@@ -28,6 +28,14 @@ spring:
 
 # MyBatis-Plus 开发环境专属配置
 mybatis-plus:
+  # classpath* 带星号，才能扫到 seckill-common jar 里的 xml
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.practice.flashsale.common.entity
   configuration:
-    # 开发阶段打印 SQL 语句，方便调试
+    map-underscore-to-camel-case: true
+    # 开发期打印 SQL，压测和上线一定要注释掉
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
