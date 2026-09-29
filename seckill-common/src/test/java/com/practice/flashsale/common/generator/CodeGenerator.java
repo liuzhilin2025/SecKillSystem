@@ -22,7 +22,7 @@ public class CodeGenerator {
                     + "&useSSL=false&allowPublicKeyRetrieval=true"
                     + "&remarks=true&useInformationSchema=true";   // 这两个参数让生成器能读到表注释
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "aR2?RZmW8YzU";
+    private static final String PASSWORD = "";
 
     /** 输出目录（路径写死最简单，按你的实际路径改） */
     private static final String JAVA_DIR =
