@@ -6,7 +6,7 @@ spring:
     # 数据库用户名
     username: root
     # 数据库密码（改成你自己的密码）
-    password: aR2?RZmW8YzU
+    password: AdS27KHe5dwB
     # 数据库驱动类名
     driver-class-name: com.mysql.cj.jdbc.Driver
     # HikariCP 连接池配置
@@ -26,6 +26,31 @@ spring:
       # 连接测试语句
       connection-test-query: SELECT 1
 
+  # Redis 配置
+  data:
+    redis:
+     # Redis 服务器地址
+      host: localhost
+      # Redis 服务器端口
+      port: 6379
+      # Redis 密码（默认为空，如果设置了密码请填写）
+
+      # 使用的数据库索引（默认 0）
+      database: 0
+      # 连接超时时间（毫秒）
+      timeout: 5000
+      # Lettuce 连接池配置（提升连接复用效率）
+      lettuce:
+        pool:
+          # 连接池最大连接数
+          max-active: 20
+          # 连接池最大空闲连接数
+          max-idle: 10
+          # 连接池最小空闲连接数
+          min-idle: 5
+          # 连接池最大阻塞等待时间（毫秒）
+          max-wait: 3000
+
 # MyBatis-Plus 开发环境专属配置
 mybatis-plus:
   # classpath* 带星号，才能扫到 seckill-common jar 里的 xml
@@ -34,8 +59,19 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     # 开发期打印 SQL，压测和上线一定要注释掉
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
   global-config:
     banner: false
     db-config:
       id-type: auto
+
+# 自定义线程池配置
+thread.pool:
+  # 核心线程数
+  core-pool-size: 2
+  # 最大线程数
+  max-pool-size: 5
+  # 队列容量
+  queue-capacity: 100
+  # 空闲线程存活时间（秒）
+  keep-alive-seconds: 60

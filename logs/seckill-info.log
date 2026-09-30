@@ -1,0 +1,121 @@
+2026-09-30 09:56:16.307 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-09-30 09:56:16.382 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 68004 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
+2026-09-30 09:56:16.384 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
+2026-09-30 09:56:17.301 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-09-30 09:56:17.304 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-09-30 09:56:17.338 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 Redis repository interfaces.
+2026-09-30 09:56:18.237 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-30 09:56:18.255 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-09-30 09:56:18.256 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-30 09:56:18.256 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2026-09-30 09:56:18.331 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-30 09:56:18.332 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1896 ms
+2026-09-30 09:56:19.639 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-09-30 09:56:19.656 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-09-30 09:56:19.664 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 3.935 seconds (process running for 5.026)
+2026-09-30 09:58:26.300 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-30 09:58:26.300 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-09-30 09:58:26.301 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-09-30 09:58:49.590 [http-nio-8080-exec-2] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[发送验证码], 入参：{"mobile":"13420906815","type":1}, 请求类：UserController, 请求方法：sendVerifyCode =================================== 
+2026-09-30 09:58:50.068 [biz-task-1] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - ==> 验证码发送成功, mobile: 13420906815, verifyCode: 594440
+2026-09-30 09:58:50.069 [http-nio-8080-exec-2] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [发送验证码], 耗时: 482ms, 出参: {"success":true,"message":null,"errorCode":null,"data":null} =================================== 
+2026-09-30 09:59:01.370 [http-nio-8080-exec-8] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[发送验证码], 入参：{"mobile":"13420906815","type":1}, 请求类：UserController, 请求方法：sendVerifyCode =================================== 
+2026-09-30 09:59:01.375 [http-nio-8080-exec-8] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/code/send request fail, errorCode: 20008, errorMessage: 验证码发送过于频繁，请稍后再试
+2026-09-30 10:01:40.213 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-09-30 10:01:40.570 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-09-30 10:30:09.409 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-09-30 10:30:09.469 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 12044 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
+2026-09-30 10:30:09.471 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
+2026-09-30 10:30:10.159 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-09-30 10:30:10.161 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-09-30 10:30:10.191 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 Redis repository interfaces.
+2026-09-30 10:30:10.892 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-30 10:30:10.907 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-09-30 10:30:10.908 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-30 10:30:10.909 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2026-09-30 10:30:10.969 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-30 10:30:10.970 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1460 ms
+2026-09-30 10:30:12.118 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-09-30 10:30:12.134 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-09-30 10:30:12.142 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 3.238 seconds (process running for 4.058)
+2026-09-30 10:31:45.434 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-30 10:31:45.435 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-09-30 10:31:45.436 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-09-30 10:31:45.682 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[发送验证码], 入参：{"mobile":"15815599376","type":1}, 请求类：UserController, 请求方法：sendVerifyCode =================================== 
+2026-09-30 10:31:46.159 [biz-task-1] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - ==> 验证码发送成功, mobile: 15815599376, verifyCode: 511452
+2026-09-30 10:31:46.159 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [发送验证码], 耗时: 496ms, 出参: {"success":true,"message":null,"errorCode":null,"data":null} =================================== 
+2026-09-30 10:33:19.207 [http-nio-8080-exec-8] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[用户注册], 入参：{"mobile":"15815599376","password":"abc123456","confirmPassword":"abc123456","verifyCode":"511452"}, 请求类：UserController, 请求方法：register =================================== 
+2026-09-30 10:33:19.213 [http-nio-8080-exec-8] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Starting...
+2026-09-30 10:33:19.407 [http-nio-8080-exec-8] INFO  com.zaxxer.hikari.pool.HikariPool - SeckillHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@291654bc
+2026-09-30 10:33:19.409 [http-nio-8080-exec-8] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Start completed.
+2026-09-30 10:33:19.622 [http-nio-8080-exec-8] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - 用户注册成功, userId=3, mobile=15815599376
+2026-09-30 10:33:19.632 [http-nio-8080-exec-8] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [用户注册], 耗时: 424ms, 出参: {"success":true,"message":null,"errorCode":null,"data":3} =================================== 
+2026-09-30 10:34:21.760 [http-nio-8080-exec-5] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[发送验证码], 入参：{"mobile":"18681531798","type":1}, 请求类：UserController, 请求方法：sendVerifyCode =================================== 
+2026-09-30 10:34:21.765 [http-nio-8080-exec-5] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [发送验证码], 耗时: 5ms, 出参: {"success":true,"message":null,"errorCode":null,"data":null} =================================== 
+2026-09-30 10:34:21.765 [biz-task-2] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - ==> 验证码发送成功, mobile: 18681531798, verifyCode: 838586
+2026-09-30 10:35:47.545 [http-nio-8080-exec-7] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[用户注册], 入参：{"mobile":"18681531798","password":"326582","confirmPassword":"326582","verifyCode":"838581"}, 请求类：UserController, 请求方法：register =================================== 
+2026-09-30 10:35:47.554 [http-nio-8080-exec-7] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/register request fail, errorCode: 20002, errorMessage: 验证码错误
+2026-09-30 10:36:01.887 [http-nio-8080-exec-2] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[用户注册], 入参：{"mobile":"18681531798","password":"326582","confirmPassword":"326582","verifyCode":"838586"}, 请求类：UserController, 请求方法：register =================================== 
+2026-09-30 10:36:01.954 [http-nio-8080-exec-2] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - 用户注册成功, userId=4, mobile=18681531798
+2026-09-30 10:36:01.958 [http-nio-8080-exec-2] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [用户注册], 耗时: 71ms, 出参: {"success":true,"message":null,"errorCode":null,"data":4} =================================== 
+2026-09-30 10:36:57.212 [http-nio-8080-exec-9] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[用户登录], 入参：{"mobile":"18681531798","type":1,"password":"326582","verifyCode":null}, 请求类：UserController, 请求方法：login =================================== 
+2026-09-30 10:36:57.334 [http-nio-8080-exec-9] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - 用户登录成功, userId=4, mobile=18681531798
+2026-09-30 10:36:57.336 [http-nio-8080-exec-9] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [用户登录], 耗时: 124ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"token":"6239683d-d6c6-4a24-a047-6335f3995449","userInfo":{"id":4,"nickname":"用户550071","avatar":null}}} =================================== 
+2026-09-30 10:39:13.821 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[发送验证码], 入参：{"mobile":"13420906815","type":2}, 请求类：UserController, 请求方法：sendVerifyCode =================================== 
+2026-09-30 10:39:13.825 [biz-task-1] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - ==> 验证码发送成功, mobile: 13420906815, verifyCode: 296476
+2026-09-30 10:39:13.825 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [发送验证码], 耗时: 4ms, 出参: {"success":true,"message":null,"errorCode":null,"data":null} =================================== 
+2026-09-30 10:40:01.937 [http-nio-8080-exec-3] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[用户登录], 入参：{"mobile":"13420906815","type":2,"password":null,"verifyCode":"296476"}, 请求类：UserController, 请求方法：login =================================== 
+2026-09-30 10:40:01.950 [http-nio-8080-exec-3] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - 用户登录成功, userId=2, mobile=13420906815
+2026-09-30 10:40:01.950 [http-nio-8080-exec-3] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [用户登录], 耗时: 13ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"token":"fcd70e09-b40b-48f1-8fd8-d4b4ae427eaa","userInfo":{"id":2,"nickname":"用户657343","avatar":null}}} =================================== 
+2026-09-30 10:40:33.784 [http-nio-8080-exec-8] INFO  com.practice.flashsale.user.controller.TestController - ==> 当前已登录, userId: 2
+2026-09-30 10:40:45.743 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-09-30 10:40:46.043 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-09-30 10:40:46.059 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown initiated...
+2026-09-30 10:40:46.065 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown completed.
+2026-09-30 14:13:58.903 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-09-30 14:13:58.972 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 52060 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
+2026-09-30 14:13:58.973 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
+2026-09-30 14:13:59.839 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-09-30 14:13:59.842 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-09-30 14:13:59.872 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 0 Redis repository interfaces.
+2026-09-30 14:14:00.617 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-30 14:14:00.634 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-09-30 14:14:00.635 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-30 14:14:00.635 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2026-09-30 14:14:00.706 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-30 14:14:00.706 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1691 ms
+2026-09-30 14:14:02.008 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-09-30 14:14:02.026 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-09-30 14:14:02.032 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 3.685 seconds (process running for 4.709)
+2026-09-30 14:14:06.349 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-30 14:14:06.349 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-09-30 14:14:06.350 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-09-30 14:14:06.563 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[发送验证码], 入参：{"mobile":"13800138002","type":1}, 请求类：UserController, 请求方法：sendVerifyCode =================================== 
+2026-09-30 14:14:07.199 [http-nio-8080-exec-1] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - 验证码已下发, mobile=13800138002, type=注册
+2026-09-30 14:14:07.199 [biz-task-1] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - ==> 验证码发送成功, mobile: 13800138002
+2026-09-30 14:14:07.201 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [发送验证码], 耗时: 654ms, 出参: {"success":true,"message":null,"errorCode":null,"data":null} =================================== 
+2026-09-30 14:15:48.126 [http-nio-8080-exec-3] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/code/send request error, errorCode: 10001, errorMessage: type 验证码类型不能为空, 当前值: 'null'; 
+2026-09-30 14:15:49.296 [http-nio-8080-exec-4] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/code/send request error, errorCode: 10001, errorMessage: type 验证码类型不能为空, 当前值: 'null'; 
+2026-09-30 14:16:05.018 [http-nio-8080-exec-5] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/register request error, errorCode: 10001, errorMessage: confirmPassword 确认密码不能为空, 当前值: 'null'; 
+2026-09-30 14:16:34.489 [http-nio-8080-exec-6] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[用户注册], 入参：{"mobile":"13800138002","password":"abc123456","confirmPassword":"abc123456","verifyCode":"706659"}, 请求类：UserController, 请求方法：register =================================== 
+2026-09-30 14:16:34.495 [http-nio-8080-exec-6] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Starting...
+2026-09-30 14:16:34.671 [http-nio-8080-exec-6] INFO  com.zaxxer.hikari.pool.HikariPool - SeckillHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@6b9e22e0
+2026-09-30 14:16:34.673 [http-nio-8080-exec-6] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Start completed.
+2026-09-30 14:16:34.909 [http-nio-8080-exec-6] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - 用户注册成功, userId=5, mobile=13800138002
+2026-09-30 14:16:34.917 [http-nio-8080-exec-6] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [用户注册], 耗时: 428ms, 出参: {"success":true,"message":null,"errorCode":null,"data":5} =================================== 
+2026-09-30 14:16:36.076 [http-nio-8080-exec-7] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[用户注册], 入参：{"mobile":"13800138002","password":"abc123456","confirmPassword":"abc123456","verifyCode":"706659"}, 请求类：UserController, 请求方法：register =================================== 
+2026-09-30 14:16:36.080 [http-nio-8080-exec-7] WARN  com.practice.flashsale.user.service.impl.UserServiceImpl - 验证码校验失败, mobile=13800138002, purpose=register, result=0
+2026-09-30 14:16:36.082 [http-nio-8080-exec-7] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/register request fail, errorCode: 20002, errorMessage: 验证码错误
+2026-09-30 14:17:22.582 [http-nio-8080-exec-8] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/register request error, errorCode: 10001, errorMessage: verifyCode 验证码不能为空, 当前值: 'null'; password 密码不能为空, 当前值: 'null'; confirmPassword 确认密码不能为空, 当前值: 'null'; 
+2026-09-30 14:17:38.163 [http-nio-8080-exec-9] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[发送验证码], 入参：{"mobile":"13800138002","type":2}, 请求类：UserController, 请求方法：sendVerifyCode =================================== 
+2026-09-30 14:17:38.167 [http-nio-8080-exec-9] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - 验证码已下发, mobile=13800138002, type=登录
+2026-09-30 14:17:38.167 [http-nio-8080-exec-9] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [发送验证码], 耗时: 5ms, 出参: {"success":true,"message":null,"errorCode":null,"data":null} =================================== 
+2026-09-30 14:17:38.167 [biz-task-2] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - ==> 验证码发送成功, mobile: 13800138002
+2026-09-30 14:17:40.875 [http-nio-8080-exec-10] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[发送验证码], 入参：{"mobile":"13800138002","type":2}, 请求类：UserController, 请求方法：sendVerifyCode =================================== 
+2026-09-30 14:17:40.877 [http-nio-8080-exec-10] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/code/send request fail, errorCode: 20008, errorMessage: 验证码发送过于频繁，请稍后再试
+2026-09-30 14:17:58.132 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[发送验证码], 入参：{"mobile":"13800138002","type":2}, 请求类：UserController, 请求方法：sendVerifyCode =================================== 
+2026-09-30 14:17:58.135 [http-nio-8080-exec-1] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/code/send request fail, errorCode: 20008, errorMessage: 验证码发送过于频繁，请稍后再试
+2026-09-30 14:18:39.271 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-09-30 14:18:39.585 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-09-30 14:18:39.603 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown initiated...
+2026-09-30 14:18:39.609 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown completed.

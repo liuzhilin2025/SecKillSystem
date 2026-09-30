@@ -12,6 +12,7 @@ public class BizException extends RuntimeException {
     private String errorMessage;
 
     public BizException(BaseExceptionInterface baseExceptionInterface) {
+        super(baseExceptionInterface.getErrorMessage());
         this.errorCode = baseExceptionInterface.getErrorCode();
         this.errorMessage = baseExceptionInterface.getErrorMessage();
     }

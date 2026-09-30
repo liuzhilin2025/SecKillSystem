@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -41,21 +42,19 @@ public class User implements Serializable {
      * 用户昵称
      */
     @TableField("nickname")
-    @NotBlank(message = "用户昵称不能为空")
     private String nickname;
 
     /**
      * 密码（加密存储）
      */
     @TableField("password")
-    @NotBlank(message = "密码不能为空")
+    @JsonIgnore
     private String password;
 
     /**
      * 手机号
      */
     @TableField("mobile")
-    @NotBlank(message = "手机号不能为空")
     private String mobile;
 
     /**
@@ -74,13 +73,11 @@ public class User implements Serializable {
      * 创建时间
      */
     @TableField("create_time")
-    @NotNull(message = "创建时间不能为空")
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @TableField("update_time")
-    @NotNull(message = "更新时间不能为空")
     private LocalDateTime updateTime;
 }

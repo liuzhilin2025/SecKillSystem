@@ -41,6 +41,11 @@
         <!-- Spring Boot 未管理的三方依赖才需要在这里声明版本 -->
         <mybatis-plus.version>3.5.10.1</mybatis-plus.version>
         <disruptor.version>3.4.4</disruptor.version>
+        <freemarker.version>2.3.33</freemarker.version>
+        <!-- SaToken 版本 -->
+        <sa-token.version>1.45.0</sa-token.version>
+        <!-- Hutool 版本 -->
+        <hutool.version>5.8.38</hutool.version>
     </properties>
 
     <!-- 统一依赖管理 -->
@@ -96,11 +101,37 @@
                 <version>${freemarker.version}</version>
             </dependency>
 
-            <!-- Disruptor 高性能队列（Log4j2 异步日志需要） -->
+            <!-- ===== 全局排除 Logback，统一使用 Log4j2 ===== -->
             <dependency>
-                <groupId>com.lmax</groupId>
-                <artifactId>disruptor</artifactId>
-                <version>${disruptor.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- SaToken 权限认证框架（适配 Spring Boot 3） -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot3-starter</artifactId>
+                <version>${sa-token.version}</version>
+            </dependency>
+
+            <!-- Sa-Token 整合 RedisTemplate -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-redis-template</artifactId>
+                <version>${sa-token.version}</version>
+            </dependency>
+
+            <!-- Hutool 工具类库 -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -110,6 +141,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- ===== Log4j2 ===== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+        <!-- 高性能异步日志：Disruptor 环形队列，版本由 Spring Boot 管理，不用写 version -->
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>${disruptor.version}</version>
         </dependency>
     </dependencies>
 

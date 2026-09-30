@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.dao.DuplicateKeyException;
+
 
 import java.util.Optional;
 
@@ -24,8 +26,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({BizException.class})
     @ResponseBody
     public Result<Object> handleBizException(HttpServletRequest request, BizException e) {
-        log
-                .warn("{} request fail, errorCode: {}, errorMessage: {}", request.getRequestURI(), e.getErrorCode(), e.getErrorMessage());
+        log.warn("{} request fail, errorCode: {}, errorMessage: {}", request.getRequestURI(), e.getErrorCode(), e.getErrorMessage());
         return Result.fail(e);
     }
 
@@ -54,7 +55,6 @@ public class GlobalExceptionHandler {
                             .append(", 当前值: '")
                             .append(error.getRejectedValue())
                             .append("'; ")
-
             );
         });
 
@@ -69,15 +69,26 @@ public class GlobalExceptionHandler {
 
     /**
      * 其他类型异常
+     *
      * @param request
      * @param e
      * @return
      */
-    @ExceptionHandler({ Exception.class })
+    @ExceptionHandler({Exception.class})
     @ResponseBody
     public Result<Object> handleOtherException(HttpServletRequest request, Exception e) {
-        log
-                .error("{} request error, ", request.getRequestURI(), e);
+        log.error("{} request error, ", request.getRequestURI(), e);
         return Result.fail(ResultCodeEnum.SYSTEM_ERROR);
     }
+
+    /**
+     * 唯一索引冲突兜底（并发注册/重复提交）
+     */
+    @ExceptionHandler({DuplicateKeyException.class})
+    @ResponseBody
+    public Result<Object> handleDuplicateKeyException(HttpServletRequest request, DuplicateKeyException e) {
+        log.warn("{} request fail, 唯一索引冲突: {}", request.getRequestURI(), e.getMessage());
+        return Result.fail(ResultCodeEnum.PARAM_NOT_VALID.getErrorCode(), "数据已存在，请勿重复提交");
+    }
+
 }
