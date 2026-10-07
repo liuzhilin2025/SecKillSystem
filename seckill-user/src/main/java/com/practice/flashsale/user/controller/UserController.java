@@ -52,4 +52,14 @@ public class UserController {
         userService.sendVerifyCode(dto);
         return Result.success(null);
     }
+
+    /**
+     * 退出登录
+     */
+    @PostMapping("/logout")
+    @ApiOperationLog(description = "退出登录")
+    public Result<Void> logout() {
+        userService.logout();
+        return Result.success(null);
+    }
 }

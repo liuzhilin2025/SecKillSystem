@@ -56,4 +56,15 @@ public class RedisConfig {
         script.setResultType(Long.class);
         return script;
     }
+
+    /**
+     * 每日发送次数限制 Lua 脚本
+     */
+    @Bean
+    public DefaultRedisScript<Long> checkAndIncrementDailyLimitScript() {
+        DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+        script.setLocation(new ClassPathResource("lua/check_and_increment_verify_code_daily_limit.lua"));
+        script.setResultType(Long.class);
+        return script;
+    }
 }

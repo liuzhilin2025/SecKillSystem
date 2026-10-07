@@ -36,4 +36,9 @@ public interface UserService extends IService<User> {
      * 发送验证码
      */
     void sendVerifyCode(SendVerifyCodeReqDTO dto);
+
+    /**
+     * 退出登录
+     */
+    void logout();
 }

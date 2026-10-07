@@ -1,5 +1,6 @@
 package com.practice.flashsale.common.exception;
 
+import cn.dev33.satoken.exception.NotLoginException;
 import com.practice.flashsale.common.enums.ResultCodeEnum;
 import com.practice.flashsale.common.utils.Result;
 import jakarta.servlet.http.HttpServletRequest;
@@ -90,5 +91,18 @@ public class GlobalExceptionHandler {
         log.warn("{} request fail, 唯一索引冲突: {}", request.getRequestURI(), e.getMessage());
         return Result.fail(ResultCodeEnum.PARAM_NOT_VALID.getErrorCode(), "数据已存在，请勿重复提交");
     }
+
+    /**
+     * 捕获 SaToken 未登录异常
+     * @return
+     */
+    @ExceptionHandler({NotLoginException.class})
+    @ResponseBody
+    public Result<Object> handleNotLoginException(HttpServletRequest request, NotLoginException e) {
+        log.warn("{} request fail, 未登录异常, type={}, message={}",
+                request.getRequestURI(), e.getType(), e.getMessage());
+        return Result.fail(ResultCodeEnum.UNAUTHORIZED);
+    }
+
 
 }

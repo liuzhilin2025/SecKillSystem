@@ -26,6 +26,9 @@ public enum ResultCodeEnum implements BaseExceptionInterface {
     VERIFY_CODE_SEND_TOO_FREQUENT("20008", "验证码发送过于频繁，请稍后再试"),
     VERIFY_CODE_DAILY_LIMIT_EXCEEDED("20009", "验证码每日发送次数已达上限，请明天再试"),
     LOGIN_FAIL_TOO_MANY("20010", "密码错误次数过多，请 30 分钟后再试"),
+    UNAUTHORIZED("20011", "未登录，请先登录"),
+    USER_LOGIN_CREDENTIAL_ERROR("20012", "手机号或密码错误"),
+    CAPTCHA_VERIFICATION_FAILED("20013", "行为验证码校验失败，请重新验证"),
     ;
 
     // 异常码

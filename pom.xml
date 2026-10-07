@@ -46,6 +46,8 @@
         <sa-token.version>1.45.0</sa-token.version>
         <!-- Hutool 版本 -->
         <hutool.version>5.8.38</hutool.version>
+        <!-- 行为验证码版本 -->
+        <tianai-captcha.version>1.5.5</tianai-captcha.version>
     </properties>
 
     <!-- 统一依赖管理 -->
@@ -132,6 +134,12 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+            <!-- 行为验证码 -->
+            <dependency>
+                <groupId>cloud.tianai.captcha</groupId>
+                <artifactId>tianai-captcha-springboot-starter</artifactId>
+                <version>${tianai-captcha.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
