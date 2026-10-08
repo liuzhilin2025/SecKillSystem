@@ -6,7 +6,7 @@ spring:
     # 数据库用户名
     username: root
     # 数据库密码（改成你自己的密码）
-    password:
+    password: AdS27KHe5dwB
     # 数据库驱动类名
     driver-class-name: com.mysql.cj.jdbc.Driver
     # HikariCP 连接池配置

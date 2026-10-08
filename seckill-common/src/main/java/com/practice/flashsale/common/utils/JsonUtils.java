@@ -25,4 +25,13 @@ public class JsonUtils {
     public static String toJsonString(Object object) {
         return OBJECT_MAPPER.writeValueAsString(object);
     }
+
+    /**
+     * 初始化 ObjectMapper，供 JacksonConfig 调用，统一序列化行为
+     *
+     * @param objectMapper
+     */
+    public static void init(ObjectMapper objectMapper) {
+        OBJECT_MAPPER = objectMapper;
+    }
 }
