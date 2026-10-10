@@ -7,6 +7,12 @@ import com.practice.flashsale.goods.model.vo.FindSeckillGoodsListRspVO;
 
 import java.util.List;
 
+/**
+ * @Author: 沃淇淋
+ * @Date: 2026/10/9 17:37
+ * @Version: v1.0.0
+ * @Description: 商品模块业务
+ **/
 public interface GoodsService {
 
     /**
@@ -25,4 +31,11 @@ public interface GoodsService {
      */
     FindSeckillGoodsDetailRspVO findSeckillGoodsDetail(FindSeckillGoodsDetailReqDTO dto);
 
+    /**
+     * 预热指定活动的商品缓存
+     *
+     * @param activityId
+     * @return
+     */
+    int preheatActivityGoods(Long activityId);
 }

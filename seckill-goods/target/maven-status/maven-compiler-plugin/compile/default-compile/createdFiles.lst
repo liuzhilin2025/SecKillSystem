@@ -1,0 +1,3 @@
+com\practice\flashsale\goods\controller\AdminGoodsController.class
+com\practice\flashsale\goods\model\dto\PreheatActivityCacheReqDTO$PreheatActivityCacheReqDTOBuilder.class
+com\practice\flashsale\goods\model\dto\PreheatActivityCacheReqDTO.class

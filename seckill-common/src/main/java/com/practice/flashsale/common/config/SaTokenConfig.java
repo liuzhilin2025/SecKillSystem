@@ -24,6 +24,8 @@ public class SaTokenConfig implements WebMvcConfigurer {
             SaRouter.match("/seckill/order", r -> StpUtil.checkLogin());
             // 登出接口，需要登陆
             SaRouter.match("/user/logout", r -> StpUtil.checkLogin());
+            // 管理端接口，需要登录
+            SaRouter.match("/admin/**", r -> StpUtil.checkLogin());
         })).addPathPatterns("/**");
     }
 }

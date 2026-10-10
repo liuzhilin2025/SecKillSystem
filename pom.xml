@@ -48,6 +48,8 @@
         <hutool.version>5.8.38</hutool.version>
         <!-- 行为验证码版本 -->
         <tianai-captcha.version>1.5.5</tianai-captcha.version>
+        <!-- Redisson 版本 -->
+        <redisson.version>3.52.0</redisson.version>
     </properties>
 
     <!-- 统一依赖管理 -->
@@ -140,6 +142,12 @@
                 <groupId>cloud.tianai.captcha</groupId>
                 <artifactId>tianai-captcha-springboot-starter</artifactId>
                 <version>${tianai-captcha.version}</version>
+            </dependency>
+            <!-- Redisson（提供布隆过滤器等高级数据结构） -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
