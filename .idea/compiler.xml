@@ -14,10 +14,11 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
         </processorPath>
+        <module name="seckill-user" />
         <module name="seckill-common" />
         <module name="seckill-goods" />
-        <module name="seckill-user" />
         <module name="seckill-order" />
         <module name="seckill-app" />
       </profile>

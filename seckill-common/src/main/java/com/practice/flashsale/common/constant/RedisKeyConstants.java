@@ -66,6 +66,17 @@ public class RedisKeyConstants {
     public static final String SECKILL_GOODS_BLOOM_KEY = "seckill:bloom:goods";
 
     /**
+     * 秒杀订单处理状态 Key 前缀
+     *
+     */
+    public static final String SECKILL_ORDER_STATUS_PREFIX = "seckill:order:status:";
+
+    /**
+     * 秒杀订单处理状态过期时间（单位：分钟）
+     */
+    public static final long SECKILL_ORDER_STATUS_TTL_MINUTES = 30;
+
+    /**
      * 根据活动结束时间动态计算缓存 TTL（秒）
      *
      * 公式：TTL = (活动结束时间 - 当前时间) + 安全缓冲时间

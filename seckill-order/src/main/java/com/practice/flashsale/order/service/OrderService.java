@@ -1,6 +1,7 @@
 package com.practice.flashsale.order.service;
 
 import com.practice.flashsale.order.model.dto.DoSeckillReqDTO;
+import com.practice.flashsale.order.model.dto.SeckillOrderMqDTO;
 import com.practice.flashsale.order.model.vo.DoSeckillRspVO;
 
 /**
@@ -18,4 +19,11 @@ public interface OrderService {
      * @return
      */
     DoSeckillRspVO doSeckill(DoSeckillReqDTO dto);
+
+    /**
+     * 异步消费秒杀下单信息：扣减库存 + 创建订单
+     *
+     * @param message
+     */
+    void createSeckillOrder(SeckillOrderMqDTO message);
 }
