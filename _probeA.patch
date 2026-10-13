@@ -1,0 +1,8 @@
+diff --git a/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java b/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java
+--- a/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java
++++ b/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java
+@@ -3,3 +3,4 @@
+ import cn.dev33.satoken.stp.StpUtil;
+ import cn.hutool.core.util.IdUtil;
++import cn.hutool.core.util.StrUtil;
+ import com.baomidou.mybatisplus.core.toolkit.Wrappers;

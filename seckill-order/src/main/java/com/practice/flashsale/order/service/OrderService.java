@@ -1,8 +1,10 @@
 package com.practice.flashsale.order.service;
 
 import com.practice.flashsale.order.model.dto.DoSeckillReqDTO;
+import com.practice.flashsale.order.model.dto.FindSeckillOrderResultReqDTO;
 import com.practice.flashsale.order.model.dto.SeckillOrderMqDTO;
 import com.practice.flashsale.order.model.vo.DoSeckillRspVO;
+import com.practice.flashsale.order.model.vo.FindSeckillOrderResultRspVO;
 
 /**
  * @Author: 沃淇淋
@@ -26,4 +28,12 @@ public interface OrderService {
      * @param message
      */
     void createSeckillOrder(SeckillOrderMqDTO message);
+
+    /**
+     * 查询秒杀订单处理结果
+     *
+     * @param dto
+     * @return
+     */
+    FindSeckillOrderResultRspVO findSeckillOrderResult(FindSeckillOrderResultReqDTO dto);
 }

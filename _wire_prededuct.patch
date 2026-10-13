@@ -1,0 +1,167 @@
+diff --git a/seckill-common/src/main/java/com/practice/flashsale/common/enums/ResultCodeEnum.java b/seckill-common/src/main/java/com/practice/flashsale/common/enums/ResultCodeEnum.java
+--- a/seckill-common/src/main/java/com/practice/flashsale/common/enums/ResultCodeEnum.java
++++ b/seckill-common/src/main/java/com/practice/flashsale/common/enums/ResultCodeEnum.java
+@@ -40,6 +40,7 @@ public enum ResultCodeEnum implements BaseExceptionInterface {
+     SECKILL_ACTIVITY_NOT_STARTED("40001", "秒杀活动未开始"),
+     SECKILL_ACTIVITY_ENDED("40002", "秒杀活动已结束"),
+     SECKILL_GOODS_SOLD_OUT("40003", "商品已售罄"),
+     SECKILL_ORDER_DUPLICATE("40004", "您已参与过此商品的秒杀"),
+     SECKILL_ORDER_PROCESSING("40005", "您的订单正在处理中，请勿重复提交"),
++    SECKILL_STOCK_NOT_PREHEATED("40006", "秒杀商品暂未开售，请稍后再试"),
+     ;
+ 
+     // 异常码
+diff --git a/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java b/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java
+--- a/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java
++++ b/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java
+@@ -6,14 +6,14 @@
+-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+ import com.practice.flashsale.common.config.RabbitMQConfig;
+ import com.practice.flashsale.common.constant.RedisKeyConstants;
+ import com.practice.flashsale.common.entity.Goods;
+-import com.practice.flashsale.common.entity.SeckillActivity;
+-import com.practice.flashsale.common.entity.SeckillGoods;
+ import com.practice.flashsale.common.entity.SeckillOrder;
+ import com.practice.flashsale.common.enums.ResultCodeEnum;
+ import com.practice.flashsale.common.exception.BizException;
+ import com.practice.flashsale.common.mapper.GoodsMapper;
+-import com.practice.flashsale.common.mapper.SeckillActivityMapper;
+ import com.practice.flashsale.common.mapper.SeckillGoodsMapper;
+ import com.practice.flashsale.common.mapper.SeckillOrderMapper;
++import com.practice.flashsale.common.model.dto.SeckillActivityGoodsMetaDTO;
++import com.practice.flashsale.common.utils.DateTimeUtils;
++import com.practice.flashsale.common.utils.JsonUtils;
+ import com.practice.flashsale.order.enums.OrderStatusEnum;
++import com.practice.flashsale.order.enums.SeckillStockDeductResultEnum;
+@@ -53,5 +53,3 @@
+     @Resource
+-    private SeckillActivityMapper seckillActivityMapper;
+-
+-    @Resource
+     private SeckillGoodsMapper seckillGoodsMapper;
+@@ -137,49 +135,48 @@
+     private DoSeckillRspVO processSeckill(Long activityId, Long goodsId, long userId) {
+-        // 2. 校验活动是否存在
+-        SeckillActivity activity = seckillActivityMapper.selectById(activityId);
+-        if (activity == null) {
+-            throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_NOT_EXIST);
+-        }
+-
+-        // 3. 校验秒杀活动时间
+-        LocalDateTime now = LocalDateTime.now();
+-        // 活动是否还没开始
+-        if (now.isBefore(activity.getBeginTime())) {
+-            throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_NOT_STARTED);
+-        }
+-
+-        // 活动已经结束
+-        if (now.isAfter(activity.getEndTime())) {
+-            throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_ENDED);
+-        }
+-
+-        // 4. 根据活动 ID 和商品 ID 查询秒杀商品，校验此活动下商品是否存在
+-        SeckillGoods seckillGoods = seckillGoodsMapper.selectOne(
+-                Wrappers.<SeckillGoods>lambdaQuery()
+-                        .eq(SeckillGoods::getActivityId, activityId)
+-                        .eq(SeckillGoods::getGoodsId, goodsId)
+-        );
+-        if (seckillGoods == null) {
+-            log.error("==> 秒杀商品不存在, activityId: {}, goodsId: {}", activityId, goodsId);
+-            throw new BizException(ResultCodeEnum.SECKILL_GOODS_NOT_EXIST);
+-        }
+-
+-        // 5. 库存校验
+-        if (seckillGoods.getSeckillStock() == null || seckillGoods.getSeckillStock() <= 0) {
+-            throw new BizException(ResultCodeEnum.SECKILL_GOODS_SOLD_OUT);
+-        }
+-
+-        // 使用 Hutool 提供的工具方法，通过雪花算法生成订单号
+-        String orderNo = IdUtil.getSnowflakeNextIdStr();
+-
+-        // 构建消息体
+-        SeckillOrderMqDTO seckillOrderMqDTO = SeckillOrderMqDTO.builder()
+-                .userId(userId)
+-                .activityId(activityId)
+-                .seckillGoodsId(seckillGoods.getId())
+-                .seckillPrice(seckillGoods.getSeckillPrice())
+-                .goodsId(goodsId)
+-                .orderNo(orderNo)
+-                .requestTime(now)
+-                .build();
++        // 2. 从 Redis 读取预热好的秒杀活动商品元数据（预热入口：POST /admin/goods/preheat）
++        // 秒杀下单是超高并发热点接口，活动时间、秒杀价等信息全部走 Redis，不再回表查询
++        String metaKey = RedisKeyConstants.buildSeckillActivityGoodsMetaKey(activityId, goodsId);
++        String metaJson = stringRedisTemplate.opsForValue().get(metaKey);
++        if (StrUtil.isBlank(metaJson) || Objects.equals(RedisKeyConstants.NULL_CACHE_VALUE, metaJson)) {
++            log.warn("==> 秒杀活动商品元数据未预热, metaKey：{}", metaKey);
++            throw new BizException(ResultCodeEnum.SECKILL_STOCK_NOT_PREHEATED);
++        }
++
++        SeckillActivityGoodsMetaDTO goodsMeta = JsonUtils.parseObject(metaJson, SeckillActivityGoodsMetaDTO.class);
++        if (Objects.isNull(goodsMeta)) {
++            log.error("==> 秒杀活动商品元数据解析失败, metaKey：{}, metaJson：{}", metaKey, metaJson);
++            throw new BizException(ResultCodeEnum.SYSTEM_ERROR);
++        }
++
++        // 3. Redis Lua 原子预扣库存：活动时间校验 + 防重复参与 + 库存扣减，一口气在 Redis 里完成
++        // 用户购买标记的 TTL 覆盖整个活动周期，防止同一用户重复参与本场秒杀
++        Long userOrderTtlSeconds = RedisKeyConstants.resolveTtlSeconds(goodsMeta.getEndTime());
++        SeckillStockDeductResultEnum deductResult = seckillStockService.preDeductStock(
++                activityId,
++                goodsId,
++                userId,
++                userOrderTtlSeconds,
++                DateTimeUtils.toEpochMilli(goodsMeta.getBeginTime()),
++                DateTimeUtils.toEpochMilli(goodsMeta.getEndTime()));
++
++        // 预扣失败，把 Lua 返回码翻译成业务异常直接返回
++        if (!Objects.equals(SeckillStockDeductResultEnum.SUCCESS, deductResult)) {
++            log.warn("==> 秒杀库存预扣失败, userId：{}, activityId：{}, goodsId：{}, result：{}",
++                    userId, activityId, goodsId, deductResult.getDescription());
++            throw new BizException(convertDeductResult(deductResult));
++        }
++
++        // 4. 使用 Hutool 提供的工具方法，通过雪花算法生成订单号
++        String orderNo = IdUtil.getSnowflakeNextIdStr();
++
++        // 构建消息体
++        SeckillOrderMqDTO seckillOrderMqDTO = SeckillOrderMqDTO.builder()
++                .userId(userId)
++                .activityId(activityId)
++                .seckillGoodsId(goodsMeta.getSeckillGoodsId())
++                .seckillPrice(goodsMeta.getSeckillPrice())
++                .goodsId(goodsId)
++                .orderNo(orderNo)
++                .requestTime(LocalDateTime.now())
++                .build();
+ 
+         // 发送 MQ，内部会携带 CorrelationData(orderNo)，方便生产者确认回调定位消息
+@@ -200,6 +201,22 @@
+     }
+ 
+     /**
++     * 秒杀库存预扣结果 -> 业务错误码
++     *
++     * @param deductResult
++     * @return
++     */
++    private ResultCodeEnum convertDeductResult(SeckillStockDeductResultEnum deductResult) {
++        switch (deductResult) {
++            case ACTIVITY_NOT_STARTED:
++                return ResultCodeEnum.SECKILL_ACTIVITY_NOT_STARTED;
++            case ACTIVITY_ENDED:
++                return ResultCodeEnum.SECKILL_ACTIVITY_ENDED;
++            case REPEATED_ORDER:
++                return ResultCodeEnum.SECKILL_ORDER_DUPLICATE;
++            case SOLD_OUT:
++                return ResultCodeEnum.SECKILL_GOODS_SOLD_OUT;
++            case STOCK_NOT_PREHEATED:
++                return ResultCodeEnum.SECKILL_STOCK_NOT_PREHEATED;
++            default:
++                return ResultCodeEnum.SYSTEM_ERROR;
++        }
++    }
++
++    /**
+      * 异步消费秒杀下单消息：扣减库存 + 创建订单
+      *

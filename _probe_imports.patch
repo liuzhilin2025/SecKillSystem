@@ -1,0 +1,25 @@
+diff --git a/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java b/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java
+--- a/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java
++++ b/seckill-order/src/main/java/com/practice/flashsale/order/service/impl/OrderServiceImpl.java
+@@ -3,17 +3,17 @@
+ import cn.dev33.satoken.stp.StpUtil;
+ import cn.hutool.core.util.IdUtil;
+ import cn.hutool.core.util.StrUtil;
+-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+ import com.practice.flashsale.common.config.RabbitMQConfig;
+ import com.practice.flashsale.common.constant.RedisKeyConstants;
+ import com.practice.flashsale.common.entity.Goods;
+-import com.practice.flashsale.common.entity.SeckillActivity;
+-import com.practice.flashsale.common.entity.SeckillGoods;
+ import com.practice.flashsale.common.entity.SeckillOrder;
+ import com.practice.flashsale.common.enums.ResultCodeEnum;
+ import com.practice.flashsale.common.exception.BizException;
+ import com.practice.flashsale.common.mapper.GoodsMapper;
+-import com.practice.flashsale.common.mapper.SeckillActivityMapper;
+ import com.practice.flashsale.common.mapper.SeckillGoodsMapper;
+ import com.practice.flashsale.common.mapper.SeckillOrderMapper;
++import com.practice.flashsale.common.model.dto.SeckillActivityGoodsMetaDTO;
++import com.practice.flashsale.common.utils.DateTimeUtils;
++import com.practice.flashsale.common.utils.JsonUtils;
+ import com.practice.flashsale.order.enums.OrderStatusEnum;
++import com.practice.flashsale.order.enums.SeckillStockDeductResultEnum;

@@ -10,6 +10,7 @@ import com.practice.flashsale.common.enums.ActivityStatusEnum;
 import com.practice.flashsale.common.enums.ResultCodeEnum;
 import com.practice.flashsale.common.exception.BizException;
 import com.practice.flashsale.common.mapper.*;
+import com.practice.flashsale.common.model.dto.SeckillActivityGoodsMetaDTO;
 import com.practice.flashsale.common.utils.JsonUtils;
 import com.practice.flashsale.goods.model.dto.FindSeckillGoodsDetailReqDTO;
 import com.practice.flashsale.goods.model.dto.FindSeckillGoodsListReqDTO;
@@ -511,11 +512,18 @@ public class GoodsServiceImpl implements GoodsService {
             throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_NOT_EXIST);
         }
 
+        // 判断活动是否已经结束
+        if (Objects.isNull(activity.getEndTime())
+                || !LocalDateTime.now().isBefore(activity.getEndTime())) {
+            log.info("==> 预热跳过：活动已结束, activityId：{}", activityId);
+            throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_ENDED);
+        }
+
         // 2. 计算动态缓存 TTL：活动剩余时间 + 安全缓冲；返回 null 说明活动早已结束，没有预热价值
         Long ttlSeconds = RedisKeyConstants.calculateTtlSeconds(activity.getEndTime());
         if (Objects.isNull(ttlSeconds) || ttlSeconds <= 0) {
             log.info("==> 预热跳过：活动已结束, activityId: {}", activityId);
-            throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_ENDED);
+            throw new IllegalArgumentException("秒杀活动缓存 TTL 计算失败");
         }
 
         // 3. 查询该活动下所有秒杀商品
@@ -581,6 +589,19 @@ public class GoodsServiceImpl implements GoodsService {
                     .endTime(activity.getEndTime())
                     .build();
 
+            // 预热秒杀下单元数据（主要用于下单接口中读取）
+            String orderMetaKey = RedisKeyConstants.buildSeckillActivityGoodsMetaKey(activityId, seckillGoods.getGoodsId());
+            SeckillActivityGoodsMetaDTO activityGoodsMetaDTO = SeckillActivityGoodsMetaDTO.builder()
+                    .seckillGoodsId(seckillGoods.getId())
+                    .activityId(activityId)
+                    .goodsId(seckillGoods.getGoodsId())
+                    .seckillPrice(seckillGoods.getSeckillPrice())
+                    .beginTime(activity.getBeginTime())
+                    .endTime(activity.getEndTime())
+                    .build();
+
+            stringRedisTemplate.opsForValue().set(orderMetaKey, JsonUtils.toJsonString(activityGoodsMetaDTO),
+                    ttlSeconds, TimeUnit.SECONDS);
             // 设置商品原价
             Goods goods = goodsMap.get(seckillGoods.getGoodsId());
             if (Objects.nonNull(goods)) {
@@ -644,6 +665,16 @@ public class GoodsServiceImpl implements GoodsService {
 
         log.info("==> 预热活动商品缓存完成, activityId: {}, 商品数: {}, 耗时: {}ms",
                 activityId, seckillGoodsList.size(), System.currentTimeMillis() - start);
+
+        // 预热秒杀库存
+        for (SeckillGoods seckillGoods : seckillGoodsList) {
+            String stockKey = RedisKeyConstants.buildSeckillStockKey(activityId, seckillGoods.getGoodsId());
+            stringRedisTemplate.opsForValue().set(stockKey, String.valueOf(seckillGoods.getSeckillStock()),
+                    ttlSeconds, TimeUnit.SECONDS);
+
+            log.info("==> 预热秒杀库存成功, key：{}, stock：{}, TTL：{}s",
+                    stockKey, seckillGoods.getSeckillStock(), ttlSeconds);
+        }
 
         return seckillGoodsList.size();
     }

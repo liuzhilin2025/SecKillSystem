@@ -1,0 +1,8 @@
+diff --git a/seckill-common/src/main/java/com/practice/flashsale/common/enums/ResultCodeEnum.java b/seckill-common/src/main/java/com/practice/flashsale/common/enums/ResultCodeEnum.java
+--- a/seckill-common/src/main/java/com/practice/flashsale/common/enums/ResultCodeEnum.java
++++ b/seckill-common/src/main/java/com/practice/flashsale/common/enums/ResultCodeEnum.java
+@@ -15,4 +15,3 @@
+     // 业务异常状态码
+-
+ 
+     // 用户模块异常状态码
