@@ -26,6 +26,10 @@ public class SeckillActivityGoodsMetaDTO {
 
     private Long goodsId;
 
+    private String goodsName;
+
+    private String goodsImg;
+
     private BigDecimal seckillPrice;
 
     private LocalDateTime beginTime;

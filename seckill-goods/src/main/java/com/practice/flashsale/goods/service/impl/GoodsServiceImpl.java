@@ -589,19 +589,6 @@ public class GoodsServiceImpl implements GoodsService {
                     .endTime(activity.getEndTime())
                     .build();
 
-            // 预热秒杀下单元数据（主要用于下单接口中读取）
-            String orderMetaKey = RedisKeyConstants.buildSeckillActivityGoodsMetaKey(activityId, seckillGoods.getGoodsId());
-            SeckillActivityGoodsMetaDTO activityGoodsMetaDTO = SeckillActivityGoodsMetaDTO.builder()
-                    .seckillGoodsId(seckillGoods.getId())
-                    .activityId(activityId)
-                    .goodsId(seckillGoods.getGoodsId())
-                    .seckillPrice(seckillGoods.getSeckillPrice())
-                    .beginTime(activity.getBeginTime())
-                    .endTime(activity.getEndTime())
-                    .build();
-
-            stringRedisTemplate.opsForValue().set(orderMetaKey, JsonUtils.toJsonString(activityGoodsMetaDTO),
-                    ttlSeconds, TimeUnit.SECONDS);
             // 设置商品原价
             Goods goods = goodsMap.get(seckillGoods.getGoodsId());
             if (Objects.nonNull(goods)) {
@@ -609,6 +596,26 @@ public class GoodsServiceImpl implements GoodsService {
             }
 
             listRspVOS.add(rspVO);
+        }
+
+        // 预热秒杀下单元数据（主要用于下单接口中读取）
+        for (SeckillGoods seckillGoods : seckillGoodsList) {
+            String orderMetaKey = RedisKeyConstants.buildSeckillActivityGoodsMetaKey(activityId, seckillGoods.getGoodsId());
+            Goods goodsDO = goodsMap.get(seckillGoods.getGoodsId());
+
+            SeckillActivityGoodsMetaDTO activityGoodsMetaDTO = SeckillActivityGoodsMetaDTO.builder()
+                    .seckillGoodsId(seckillGoods.getId())
+                    .activityId(activityId)
+                    .goodsId(seckillGoods.getGoodsId())
+                    .goodsName(Objects.nonNull(goodsDO) ? goodsDO.getGoodsName() : null)
+                    .goodsImg(Objects.nonNull(goodsDO) ? goodsDO.getGoodsImg() : null)
+                    .seckillPrice(seckillGoods.getSeckillPrice())
+                    .beginTime(activity.getBeginTime())
+                    .endTime(activity.getEndTime())
+                    .build();
+
+            stringRedisTemplate.opsForValue().set(orderMetaKey, JsonUtils.toJsonString(activityGoodsMetaDTO),
+                    ttlSeconds, TimeUnit.SECONDS);
         }
 
         // 构建 Redis Key

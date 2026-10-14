@@ -16,7 +16,11 @@ import com.practice.flashsale.common.mapper.GoodsMapper;
 import com.practice.flashsale.common.mapper.SeckillActivityMapper;
 import com.practice.flashsale.common.mapper.SeckillGoodsMapper;
 import com.practice.flashsale.common.mapper.SeckillOrderMapper;
+import com.practice.flashsale.common.model.dto.SeckillActivityGoodsMetaDTO;
+import com.practice.flashsale.common.utils.DateTimeUtils;
+import com.practice.flashsale.common.utils.JsonUtils;
 import com.practice.flashsale.order.enums.OrderStatusEnum;
+import com.practice.flashsale.order.enums.SeckillStockDeductResultEnum;
 import com.practice.flashsale.order.model.dto.DoSeckillReqDTO;
 import com.practice.flashsale.order.model.dto.FindSeckillOrderResultReqDTO;
 import com.practice.flashsale.order.model.dto.SeckillOrderMqDTO;
@@ -135,37 +139,44 @@ public class OrderServiceImpl implements OrderService {
      * 秒杀下单逻辑
      */
     private DoSeckillRspVO processSeckill(Long activityId, Long goodsId, long userId) {
-        // 2. 校验活动是否存在
-        SeckillActivity activity = seckillActivityMapper.selectById(activityId);
-        if (activity == null) {
-            throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_NOT_EXIST);
+        // 从 Redis 中查询秒杀商品元数据
+        String redisKey = RedisKeyConstants.buildSeckillActivityGoodsMetaKey(activityId, goodsId);
+        String cachedValue = stringRedisTemplate.opsForValue().get(redisKey);
+
+        if (StrUtil.isBlank(cachedValue)) {
+            log.error("==> 秒杀下单入口元数据未预热, key：{}", redisKey);
+            throw new IllegalStateException("秒杀下单入口元数据未预热，请先预热活动");
         }
+
+        // 转换 Json 字符串为实体类
+        SeckillActivityGoodsMetaDTO activityGoodsMetaDTO = JsonUtils.parseObject(cachedValue, SeckillActivityGoodsMetaDTO.class);
 
         // 3. 校验秒杀活动时间
         LocalDateTime now = LocalDateTime.now();
-        // 活动是否还没开始
-        if (now.isBefore(activity.getBeginTime())) {
+
+        // 根据活动结束时间，来计算用户购买标记缓存的 TTL，覆盖整个秒杀活动周期
+        Long userOrderTtlSeconds = RedisKeyConstants.calculateTtlSeconds(activityGoodsMetaDTO.getEndTime());
+
+        // 由于业务需要，避免售罄标记，抢在活动状态校验、一人一单之前返回，不然提示信息，对用户不友好
+        // 校验活动开始、结束时间
+        if (now.isBefore(activityGoodsMetaDTO.getBeginTime())) {
             throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_NOT_STARTED);
         }
 
-        // 活动已经结束
-        if (now.isAfter(activity.getEndTime())) {
+        if (!now.isBefore(activityGoodsMetaDTO.getEndTime())) {
             throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_ENDED);
         }
 
-        // 4. 根据活动 ID 和商品 ID 查询秒杀商品，校验此活动下商品是否存在
-        SeckillGoods seckillGoods = seckillGoodsMapper.selectOne(
-                Wrappers.<SeckillGoods>lambdaQuery()
-                        .eq(SeckillGoods::getActivityId, activityId)
-                        .eq(SeckillGoods::getGoodsId, goodsId)
-        );
-        if (seckillGoods == null) {
-            log.error("==> 秒杀商品不存在, activityId: {}, goodsId: {}", activityId, goodsId);
-            throw new BizException(ResultCodeEnum.SECKILL_GOODS_NOT_EXIST);
+        // 如果用户已经参与过本场秒杀时，优先返回重复参与，而不是被售罄标记拦截
+        String userOrderKey = RedisKeyConstants.buildSeckillUserOrderKey(activityId, goodsId, userId);
+        if (stringRedisTemplate.hasKey(userOrderKey)) {
+            throw new BizException(ResultCodeEnum.SECKILL_ORDER_DUPLICATE);
         }
 
-        // 5. 库存校验
-        if (seckillGoods.getSeckillStock() == null || seckillGoods.getSeckillStock() <= 0) {
+        // 秒杀商品已经售罄时，直接快速失败，不再继续生成 orderNo 和执行 Lua 脚本
+        String soldOutKey = RedisKeyConstants.buildSeckillSoldOutKey(activityId, goodsId);
+        if (stringRedisTemplate.hasKey(soldOutKey)) {
+            log.info("==> 秒杀商品已售罄，命中售罄标记快速失败, key：{}", soldOutKey);
             throw new BizException(ResultCodeEnum.SECKILL_GOODS_SOLD_OUT);
         }
 
@@ -176,21 +187,51 @@ public class OrderServiceImpl implements OrderService {
         SeckillOrderMqDTO seckillOrderMqDTO = SeckillOrderMqDTO.builder()
                 .userId(userId)
                 .activityId(activityId)
-                .seckillGoodsId(seckillGoods.getId())
-                .seckillPrice(seckillGoods.getSeckillPrice())
+                .seckillGoodsId(activityGoodsMetaDTO.getSeckillGoodsId())
+                .goodsName(activityGoodsMetaDTO.getGoodsName())
+                .goodsImg(activityGoodsMetaDTO.getGoodsImg())
+                .seckillPrice(activityGoodsMetaDTO.getSeckillPrice())
                 .goodsId(goodsId)
                 .orderNo(orderNo)
                 .requestTime(now)
                 .build();
 
-        // 发送 MQ，内部会携带 CorrelationData(orderNo)，方便生产者确认回调定位消息
-        seckillOrderMessageSender.send(seckillOrderMqDTO);
+        // 执行 Redis Lua 脚本：原子校验一人一单并预扣库存
+        SeckillStockDeductResultEnum deductResult = seckillStockService.preDeductStock(
+                seckillOrderMqDTO, userOrderTtlSeconds,
+                DateTimeUtils.toEpochMilli(activityGoodsMetaDTO.getBeginTime()),
+                DateTimeUtils.toEpochMilli(activityGoodsMetaDTO.getEndTime()));
 
-        log.info("==> 秒杀下单消息已发送至 MQ, orderNo: {}, userId：{}, activityId：{}, goodsId：{}",
-                orderNo, userId, activityId, goodsId);
+        // 判断 Lua 脚本执行结果
+        // 秒杀活动还没开始
+        if (Objects.equals(deductResult, SeckillStockDeductResultEnum.ACTIVITY_NOT_STARTED)) {
+            throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_NOT_STARTED);
+        }
+
+        // 秒杀活动已经结束
+        if (Objects.equals(deductResult, SeckillStockDeductResultEnum.ACTIVITY_ENDED)) {
+            throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_ENDED);
+        }
+
+        // 已售罄
+        if (Objects.equals(deductResult, SeckillStockDeductResultEnum.SOLD_OUT)) {
+            throw new BizException(ResultCodeEnum.SECKILL_GOODS_SOLD_OUT);
+        }
+
+        // 请勿重复参与秒杀
+        if (Objects.equals(deductResult, SeckillStockDeductResultEnum.REPEATED_ORDER)) {
+            throw new BizException(ResultCodeEnum.SECKILL_ORDER_DUPLICATE);
+        }
 
         // 记录异步处理状态，前端后续可以根据 orderNo 查询最终结果
         saveOrderStatus(userId, orderNo, OrderStatusEnum.PROCESSING.getStatus());
+
+        // 发送 MQ，内部会携带 CorrelationData(orderNo)，方便生产者确认回调定位消息
+        boolean isSendSuccess = seckillOrderMessageSender.send(seckillOrderMqDTO);
+
+        if (!isSendSuccess) {
+            log.warn("==> 秒杀下单消息发送结果未知，订单保持处理中等待后续确认, orderNo：{}", orderNo);
+        }
 
         // 立即响应 “处理中”，返回 orderNo + status(-1 处理中)，不再干等那 ~100ms 的写库操作；
         return DoSeckillRspVO.builder()
@@ -215,9 +256,6 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("==> 消费秒杀下单消息, orderNo: {}, userId: {}, activityId: {}, goodsId: {}",
                 orderNo, userId, activityId, goodsId);
-
-        // 查询商品信息，用于冗余到订单中
-        Goods goods = goodsMapper.selectById(goodsId);
 
         // 订单过期时间：当前时间 + 30 分钟
         LocalDateTime expireTime = LocalDateTime.now().plusMinutes(30);
@@ -245,8 +283,8 @@ public class OrderServiceImpl implements OrderService {
                         .goodsId(goodsId)
                         .orderNo(orderNo)
                         .seckillPrice(message.getSeckillPrice())
-                        .goodsName(goods.getGoodsName())
-                        .goodsImg(goods.getGoodsImg())
+                        .goodsName(message.getGoodsName())
+                        .goodsImg(message.getGoodsImg())
                         .status(OrderStatusEnum.PENDING_PAYMENT.getStatus())
                         .expireTime(expireTime)
                         .isDeleted(0)
@@ -262,6 +300,9 @@ public class OrderServiceImpl implements OrderService {
             if (Objects.isNull(orderDO)) {
                 saveOrderStatus(userId, orderNo, OrderStatusEnum.SECKILL_FAILED.getStatus());
 
+                // 清理 Redis 中的回补上下文
+                deleteCompensationContext(orderNo);
+
                 // 推送 sse 结果
                 seckillOrderResultNotifyService.notifyOrderResult(userId,
                         buildStatusResult(orderNo, OrderStatusEnum.SECKILL_FAILED));
@@ -269,6 +310,9 @@ public class OrderServiceImpl implements OrderService {
             }
             // 订单创建成功，更新 Redis 中订单状态为待支付
             saveOrderStatus(userId, orderNo, OrderStatusEnum.PENDING_PAYMENT.getStatus());
+
+            // 消费者已经正常落库，删除待回补上下文，避免 Redis 中残留无效数据，占着内存
+            deleteCompensationContext(orderNo);
 
             // 推送 sse 结果
             seckillOrderResultNotifyService.notifyOrderResult(userId, buildOrderResult(orderDO));
@@ -283,6 +327,10 @@ public class OrderServiceImpl implements OrderService {
             SeckillOrder existedOrder = seckillOrderMapper.selectByOrderNoAndUserId(orderNo, userId);
             if (Objects.nonNull(existedOrder)) {
                 saveOrderStatus(userId, orderNo, existedOrder.getStatus());
+
+                // 清理 Redis 中的回补上下文
+                deleteCompensationContext(orderNo);
+
                 // 推送 sse 结果
                 seckillOrderResultNotifyService.notifyOrderResult(userId, buildOrderResult(existedOrder));
             } else {
@@ -314,6 +362,17 @@ public class OrderServiceImpl implements OrderService {
                 .statusDesc(status.getDescription())
                 .build();
     }
+
+    /**
+     * 删除秒杀订单待回补上下文
+     *
+     * @param orderNo 订单号
+     */
+    private void deleteCompensationContext(String orderNo) {
+        String compensationKey = RedisKeyConstants.buildSeckillOrderCompensationKey(orderNo);
+        stringRedisTemplate.delete(compensationKey);
+    }
+
 
     /**
      * 查询秒杀订单处理结果

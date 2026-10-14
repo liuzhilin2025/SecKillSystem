@@ -36,6 +36,16 @@ public class SeckillOrderMqDTO {
     private Long goodsId;
 
     /**
+     * 商品名称快照
+     */
+    private String goodsName;
+
+    /**
+     * 商品主图快照
+     */
+    private String goodsImg;
+
+    /**
      * 秒杀商品主键 ID
      */
     private Long seckillGoodsId;
