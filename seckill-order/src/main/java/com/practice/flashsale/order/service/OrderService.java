@@ -2,9 +2,11 @@ package com.practice.flashsale.order.service;
 
 import com.practice.flashsale.order.model.dto.DoSeckillReqDTO;
 import com.practice.flashsale.order.model.dto.FindSeckillOrderResultReqDTO;
+import com.practice.flashsale.order.model.dto.GetSeckillTokenReqDTO;
 import com.practice.flashsale.order.model.dto.SeckillOrderMqDTO;
 import com.practice.flashsale.order.model.vo.DoSeckillRspVO;
 import com.practice.flashsale.order.model.vo.FindSeckillOrderResultRspVO;
+import com.practice.flashsale.order.model.vo.GetSeckillTokenRspVO;
 
 /**
  * @Author: 沃淇淋
@@ -36,4 +38,12 @@ public interface OrderService {
      * @return
      */
     FindSeckillOrderResultRspVO findSeckillOrderResult(FindSeckillOrderResultReqDTO dto);
+
+    /**
+     * 获取秒杀令牌
+     *
+     * @param reqDTO
+     * @return
+     */
+    GetSeckillTokenRspVO getSeckillToken(GetSeckillTokenReqDTO reqDTO);
 }

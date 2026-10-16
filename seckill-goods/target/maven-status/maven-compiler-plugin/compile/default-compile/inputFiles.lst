@@ -7,3 +7,4 @@ D:\java_practice\FlashSaleSystem\seckill-goods\src\main\java\com\practice\flashs
 D:\java_practice\FlashSaleSystem\seckill-goods\src\main\java\com\practice\flashsale\goods\model\vo\FindSeckillGoodsListRspVO.java
 D:\java_practice\FlashSaleSystem\seckill-goods\src\main\java\com\practice\flashsale\goods\service\GoodsService.java
 D:\java_practice\FlashSaleSystem\seckill-goods\src\main\java\com\practice\flashsale\goods\service\impl\GoodsServiceImpl.java
+D:\java_practice\FlashSaleSystem\seckill-goods\src\main\java\com\practice\flashsale\goods\utils\SeckillGoodsStockUtils.java

@@ -6,7 +6,7 @@ spring:
     # 数据库用户名
     username: root
     # 数据库密码（改成你自己的密码）
-    password: root
+    password: my_password
     # 数据库驱动类名
     driver-class-name: com.mysql.cj.jdbc.Driver
     # HikariCP 连接池配置
@@ -91,3 +91,9 @@ thread.pool:
   queue-capacity: 100
   # 空闲线程存活时间（秒）
   keep-alive-seconds: 60
+
+# 秒杀业务配置
+seckill:
+  token-gate:
+    multiplier: 5 # 秒杀令牌大闸放大系数：大闸令牌数量 = 秒杀库存 * multiplier
+

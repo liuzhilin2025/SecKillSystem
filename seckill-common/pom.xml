@@ -71,7 +71,7 @@
         <!-- Redisson（提供布隆过滤器等高级数据结构） -->
         <dependency>
             <groupId>org.redisson</groupId>
-            <artifactId>redisson-spring-boot-starter</artifactId>
+            <artifactId>redisson</artifactId>
         </dependency>
 
         <!-- Caffeine 本地缓存 -->

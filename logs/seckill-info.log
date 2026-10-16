@@ -1,325 +1,218 @@
-2026-10-14 10:16:35.592 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
-2026-10-14 10:16:35.663 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 44132 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
-2026-10-14 10:16:35.664 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
-2026-10-14 10:16:36.604 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-10-14 10:16:36.606 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2026-10-14 10:16:36.643 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 Redis repository interfaces.
-2026-10-14 10:16:37.700 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2026-10-14 10:16:37.719 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-10-14 10:16:37.721 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2026-10-14 10:16:37.721 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
-2026-10-14 10:16:37.796 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-10-14 10:16:37.796 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2081 ms
-2026-10-14 10:16:38.632 [main] INFO  org.redisson.Version - Redisson 3.52.0
-2026-10-14 10:16:39.060 [redisson-netty-1-5] INFO  org.redisson.connection.ConnectionsHolder - 1 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 10:16:39.136 [redisson-netty-1-20] INFO  org.redisson.connection.ConnectionsHolder - 24 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 10:16:39.420 [main] INFO  cloud.tianai.captcha.generator.AbstractImageCaptchaGenerator - 图片验证码[SpringMultiImageCaptchaGenerator]初始化...
-2026-10-14 10:16:40.193 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-10-14 10:16:40.206 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2026-10-14 10:16:40.210 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5673]
-2026-10-14 10:16:40.485 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#28cf179c:0/SimpleConnection@4250b0c1 [delegate=amqp://seckill@127.0.0.1:5673//seckill, localPort=56976]
-2026-10-14 10:16:40.570 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 5.546 seconds (process running for 6.681)
-2026-10-14 10:18:50.071 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-10-14 10:18:50.071 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-10-14 10:18:50.071 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 0 ms
-2026-10-14 10:18:50.348 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[手动预热商品缓存], 入参：{"activityId":1}, 请求类：AdminGoodsController, 请求方法：preheatActivityGoods =================================== 
-2026-10-14 10:18:50.348 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 开始预热活动商品缓存, activityId: 1
-2026-10-14 10:18:50.370 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Starting...
-2026-10-14 10:18:50.568 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.pool.HikariPool - SeckillHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@319d067
-2026-10-14 10:18:50.570 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Start completed.
-2026-10-14 10:18:50.787 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 活动布隆过滤器写入成功, activityId：1
-2026-10-14 10:18:50.796 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 商品布隆过滤器写入成功, activityId：1, 商品数：3
-2026-10-14 10:18:50.820 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热商品列表缓存成功, key: seckill:goods:list:1, ttlSeconds: 6790268
-2026-10-14 10:18:50.855 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热活动商品缓存完成, activityId: 1, 商品数: 3, 耗时: 507ms
-2026-10-14 10:18:50.857 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:1, stock：1000, TTL：6790268s
-2026-10-14 10:18:50.858 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:2, stock：38, TTL：6790268s
-2026-10-14 10:18:50.858 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:3, stock：166, TTL：6790268s
-2026-10-14 10:18:50.860 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [手动预热商品缓存], 耗时: 525ms, 出参: {"success":true,"message":null,"errorCode":null,"data":3} =================================== 
-2026-10-14 10:19:43.926 [http-nio-8080-exec-3] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":1}, 请求类：OrderController, 请求方法：doSeckill =================================== 
-2026-10-14 10:19:43.926 [http-nio-8080-exec-3] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：2
-2026-10-14 10:19:43.985 [http-nio-8080-exec-3] INFO  com.practice.flashsale.order.service.impl.SeckillStockServiceImpl - ==> 秒杀库存预扣完成, key：seckill:stock:1:1, result：库存预扣成功
-2026-10-14 10:19:44.049 [http-nio-8080-exec-3] INFO  com.practice.flashsale.order.mq.SeckillOrderMessageSender - ==> 秒杀下单消息发送请求已提交, orderNo：2110193808171323392, userId：2, activityId：1, goodsId：1
-2026-10-14 10:19:44.049 [http-nio-8080-exec-3] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 秒杀下单消息已发送至 MQ, orderNo: 2110193808171323392, userId：2, activityId：1, goodsId：1
-2026-10-14 10:19:44.052 [http-nio-8080-exec-3] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [秒杀下单], 耗时: 126ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"orderNo":"2110193808171323392","status":-1}} =================================== 
-2026-10-14 10:19:44.065 [rabbitConnectionFactory2] INFO  com.practice.flashsale.common.config.RabbitMQPublisherConfirmConfig - ==> 秒杀下单消息已到达交换机, correlationId：2110193808171323392
-2026-10-14 10:19:44.077 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] INFO  com.practice.flashsale.order.consumer.SeckillOrderConsumer - ## 收到秒杀订单消息：SeckillOrderMqDTO(userId=2, activityId=1, goodsId=1, seckillGoodsId=1, seckillPrice=8999.00, orderNo=2110193808171323392, requestTime=2026-10-14T10:19:43.985018300)
-2026-10-14 10:19:44.077 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 消费秒杀下单消息, orderNo: 2110193808171323392, userId: 2, activityId: 1, goodsId: 1
-2026-10-14 10:19:44.167 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - #### 秒杀扣库存耗时, orderNo：2110193808171323392, seckillGoodsId：1, cost：83 ms
-2026-10-14 10:19:44.192 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] INFO  com.practice.flashsale.order.service.impl.SeckillOrderResultNotifyServiceImpl - ==> 秒杀订单结果 SSE 连接不存在, 跳过推送, userId：2, orderNo：2110193808171323392
-2026-10-14 10:19:44.192 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 异步秒杀下单成功, orderNo：2110193808171323392
-2026-10-14 10:19:44.192 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - #### 秒杀订单消费链路总耗时, orderNo：2110193808171323392, cost：115 ms
-2026-10-14 10:19:44.192 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] INFO  com.practice.flashsale.order.consumer.SeckillOrderConsumer - ## 秒杀订单消息已 ACK, orderNo：2110193808171323392, deliveryTag：1
-2026-10-14 10:21:21.399 [http-nio-8080-exec-4] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /seckill/order/result request error, errorCode: 10001, errorMessage: orderNo 订单号不能为空, 当前值: 'null'; 
-2026-10-14 10:22:00.658 [http-nio-8080-exec-5] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[查询秒杀订单处理结果], 入参：{"orderNo":"2110193808171323392"}, 请求类：OrderController, 请求方法：findSeckillOrderResult =================================== 
-2026-10-14 10:22:00.664 [http-nio-8080-exec-5] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [查询秒杀订单处理结果], 耗时: 6ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"orderId":1,"orderNo":"2110193808171323392","status":0,"statusDesc":"待支付","goodsId":1,"goodsName":"iPhone 15 Pro Max 256GB 深空黑色","goodsImg":"https://img.quanxiaoha.com/iphone15promax.jpg","seckillPrice":8999.00}} =================================== 
-2026-10-14 10:22:51.744 [http-nio-8080-exec-6] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":1}, 请求类：OrderController, 请求方法：doSeckill =================================== 
-2026-10-14 10:22:51.745 [http-nio-8080-exec-6] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：2
-2026-10-14 10:22:51.748 [http-nio-8080-exec-6] INFO  com.practice.flashsale.order.service.impl.SeckillStockServiceImpl - ==> 重复参与秒杀, userId：2, activityId：1, goodsId：1
-2026-10-14 10:22:51.748 [http-nio-8080-exec-6] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /seckill/order request fail, errorCode: 40004, errorMessage: 您已参与过此商品的秒杀
-2026-10-14 10:26:08.093 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 10:26:08.094 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 10:26:08.095 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 10:26:08.708 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 10:26:08.895 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 10:26:09.021 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 10:26:09.022 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2026-10-14 10:26:09.342 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
-2026-10-14 10:26:09.373 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown initiated...
-2026-10-14 10:26:09.379 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown completed.
-2026-10-14 14:56:18.277 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
-2026-10-14 14:56:18.346 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 59340 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
-2026-10-14 14:56:18.348 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
-2026-10-14 14:56:19.349 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-10-14 14:56:19.351 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2026-10-14 14:56:19.386 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 Redis repository interfaces.
-2026-10-14 14:56:20.441 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2026-10-14 14:56:20.461 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-10-14 14:56:20.463 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2026-10-14 14:56:20.463 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
-2026-10-14 14:56:20.537 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-10-14 14:56:20.538 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2145 ms
-2026-10-14 14:56:21.385 [main] INFO  org.redisson.Version - Redisson 3.52.0
-2026-10-14 14:56:21.856 [redisson-netty-1-5] INFO  org.redisson.connection.ConnectionsHolder - 1 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 14:56:21.944 [redisson-netty-1-20] INFO  org.redisson.connection.ConnectionsHolder - 24 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 14:56:22.245 [main] INFO  cloud.tianai.captcha.generator.AbstractImageCaptchaGenerator - 图片验证码[SpringMultiImageCaptchaGenerator]初始化...
-2026-10-14 14:56:23.007 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-10-14 14:56:23.022 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2026-10-14 14:56:23.025 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5673]
-2026-10-14 14:56:23.158 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#48aa0813:0/SimpleConnection@40e7aea9 [delegate=amqp://seckill@127.0.0.1:5673//seckill, localPort=61648]
-2026-10-14 14:56:23.294 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 5.566 seconds (process running for 6.65)
-2026-10-14 14:57:26.403 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-10-14 14:57:26.403 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-10-14 14:57:26.405 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 2 ms
-2026-10-14 14:57:26.679 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":1}, 请求类：OrderController, 请求方法：doSeckill =================================== 
-2026-10-14 14:57:26.680 [http-nio-8080-exec-1] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：2
-2026-10-14 14:57:26.810 [http-nio-8080-exec-1] INFO  com.practice.flashsale.order.service.impl.SeckillStockServiceImpl - ==> 重复参与秒杀, userId：2, activityId：1, goodsId：1
-2026-10-14 14:57:26.817 [http-nio-8080-exec-1] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /seckill/order request fail, errorCode: 40004, errorMessage: 您已参与过此商品的秒杀
-2026-10-14 15:17:11.520 [http-nio-8080-exec-4] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":1}, 请求类：OrderController, 请求方法：doSeckill =================================== 
-2026-10-14 15:17:11.521 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：2
-2026-10-14 15:17:11.526 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.SeckillStockServiceImpl - ==> 重复参与秒杀, userId：2, activityId：1, goodsId：1
-2026-10-14 15:17:11.528 [http-nio-8080-exec-4] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /seckill/order request fail, errorCode: 40004, errorMessage: 您已参与过此商品的秒杀
-2026-10-14 15:20:24.551 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 15:20:24.552 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 15:20:24.553 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 15:20:24.805 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 15:20:25.103 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 15:20:25.227 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 15:20:25.230 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2026-10-14 15:20:25.542 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
-2026-10-14 15:21:05.920 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
-2026-10-14 15:21:05.980 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 27440 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
-2026-10-14 15:21:05.984 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
-2026-10-14 15:21:06.806 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-10-14 15:21:06.809 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2026-10-14 15:21:06.836 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 0 Redis repository interfaces.
-2026-10-14 15:21:07.677 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2026-10-14 15:21:07.694 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-10-14 15:21:07.695 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2026-10-14 15:21:07.695 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
-2026-10-14 15:21:07.760 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-10-14 15:21:07.761 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1737 ms
-2026-10-14 15:21:08.488 [main] INFO  org.redisson.Version - Redisson 3.52.0
-2026-10-14 15:21:08.873 [redisson-netty-1-5] INFO  org.redisson.connection.ConnectionsHolder - 1 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 15:21:08.953 [redisson-netty-1-20] INFO  org.redisson.connection.ConnectionsHolder - 24 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 15:21:09.215 [main] INFO  cloud.tianai.captcha.generator.AbstractImageCaptchaGenerator - 图片验证码[SpringMultiImageCaptchaGenerator]初始化...
-2026-10-14 15:21:09.918 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-10-14 15:21:09.931 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2026-10-14 15:21:09.934 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5673]
-2026-10-14 15:21:10.015 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#3639b04:0/SimpleConnection@63ff861e [delegate=amqp://seckill@127.0.0.1:5673//seckill, localPort=53425]
-2026-10-14 15:21:10.114 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 4.684 seconds (process running for 5.652)
-2026-10-14 15:21:15.447 [http-nio-8080-exec-4] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-10-14 15:21:15.447 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-10-14 15:21:15.448 [http-nio-8080-exec-4] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2026-10-14 15:21:15.711 [http-nio-8080-exec-4] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":1}, 请求类：OrderController, 请求方法：doSeckill =================================== 
-2026-10-14 15:21:15.714 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：2
-2026-10-14 15:21:15.821 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.SeckillStockServiceImpl - ==> 重复参与秒杀, userId：2, activityId：1, goodsId：1
-2026-10-14 15:21:15.826 [http-nio-8080-exec-4] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /seckill/order request fail, errorCode: 40004, errorMessage: 您已参与过此商品的秒杀
-2026-10-14 15:21:55.187 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 15:21:55.188 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 15:21:55.190 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 15:21:55.319 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 15:21:55.361 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 15:21:55.371 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 15:21:55.373 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2026-10-14 15:21:55.672 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
-2026-10-14 16:35:49.538 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
-2026-10-14 16:35:49.599 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 2372 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
-2026-10-14 16:35:49.601 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
-2026-10-14 16:35:50.481 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-10-14 16:35:50.483 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2026-10-14 16:35:50.511 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 Redis repository interfaces.
-2026-10-14 16:35:51.362 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2026-10-14 16:35:51.378 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-10-14 16:35:51.380 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2026-10-14 16:35:51.380 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
-2026-10-14 16:35:51.453 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-10-14 16:35:51.453 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1809 ms
-2026-10-14 16:35:52.187 [main] INFO  org.redisson.Version - Redisson 3.52.0
-2026-10-14 16:35:52.601 [redisson-netty-1-5] INFO  org.redisson.connection.ConnectionsHolder - 1 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 16:35:52.713 [redisson-netty-1-20] INFO  org.redisson.connection.ConnectionsHolder - 24 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 16:35:52.994 [main] INFO  cloud.tianai.captcha.generator.AbstractImageCaptchaGenerator - 图片验证码[SpringMultiImageCaptchaGenerator]初始化...
-2026-10-14 16:35:53.717 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-10-14 16:35:53.729 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2026-10-14 16:35:53.731 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5673]
-2026-10-14 16:35:53.855 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#2a531637:0/SimpleConnection@18174bd9 [delegate=amqp://seckill@127.0.0.1:5673//seckill, localPort=59708]
-2026-10-14 16:35:53.993 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 4.959 seconds (process running for 5.941)
-2026-10-14 16:36:23.069 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-10-14 16:36:23.069 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-10-14 16:36:23.070 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2026-10-14 16:36:23.352 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[手动预热商品缓存], 入参：{"activityId":1}, 请求类：AdminGoodsController, 请求方法：preheatActivityGoods =================================== 
-2026-10-14 16:36:23.352 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 开始预热活动商品缓存, activityId: 1
-2026-10-14 16:36:23.379 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Starting...
-2026-10-14 16:36:23.598 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.pool.HikariPool - SeckillHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@760231ff
-2026-10-14 16:36:23.599 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Start completed.
-2026-10-14 16:36:23.807 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 活动布隆过滤器写入成功, activityId：1
-2026-10-14 16:36:23.816 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 商品布隆过滤器写入成功, activityId：1, 商品数：3
-2026-10-14 16:36:23.840 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热商品列表缓存成功, key: seckill:goods:list:1, ttlSeconds: 6767615
-2026-10-14 16:36:23.872 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热活动商品缓存完成, activityId: 1, 商品数: 3, 耗时: 520ms
-2026-10-14 16:36:23.873 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:1, stock：100, TTL：6767615s
-2026-10-14 16:36:23.874 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:2, stock：38, TTL：6767615s
-2026-10-14 16:36:23.875 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:3, stock：166, TTL：6767615s
-2026-10-14 16:36:23.876 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [手动预热商品缓存], 耗时: 540ms, 出参: {"success":true,"message":null,"errorCode":null,"data":3} =================================== 
-2026-10-14 16:37:49.150 [http-nio-8080-exec-4] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":1}, 请求类：OrderController, 请求方法：doSeckill =================================== 
-2026-10-14 16:37:49.151 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：2
-2026-10-14 16:37:49.239 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.SeckillStockServiceImpl - ==> 重复参与秒杀, userId：2, activityId：1, goodsId：1
-2026-10-14 16:37:49.241 [http-nio-8080-exec-4] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /seckill/order request fail, errorCode: 40004, errorMessage: 您已参与过此商品的秒杀
-2026-10-14 16:43:46.425 [http-nio-8080-exec-6] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[用户登录], 入参：{"mobile":"18019988888","type":1,"password":"123456","verifyCode":null}, 请求类：UserController, 请求方法：login =================================== 
-2026-10-14 16:43:46.437 [http-nio-8080-exec-6] WARN  org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder - Encoded password does not look like BCrypt
-2026-10-14 16:43:46.459 [http-nio-8080-exec-6] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - 登录失败次数 +1, mobile=18019988888, failCount=1
-2026-10-14 16:43:46.459 [http-nio-8080-exec-6] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/login request fail, errorCode: 20012, errorMessage: 手机号或密码错误
-2026-10-14 16:44:40.234 [http-nio-8080-exec-7] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[用户登录], 入参：{"mobile":"18019988888","type":1,"password":"123456","verifyCode":null}, 请求类：UserController, 请求方法：login =================================== 
-2026-10-14 16:44:40.323 [http-nio-8080-exec-7] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - 登录失败次数 +1, mobile=18019988888, failCount=2
-2026-10-14 16:44:40.323 [http-nio-8080-exec-7] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/login request fail, errorCode: 20012, errorMessage: 手机号或密码错误
-2026-10-14 16:47:16.659 [http-nio-8080-exec-9] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[用户登录], 入参：{"mobile":"15815599376","type":1,"password":"Mkyl2014!","verifyCode":null}, 请求类：UserController, 请求方法：login =================================== 
-2026-10-14 16:47:16.724 [http-nio-8080-exec-9] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - 登录失败次数 +1, mobile=15815599376, failCount=1
-2026-10-14 16:47:16.724 [http-nio-8080-exec-9] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /user/login request fail, errorCode: 20012, errorMessage: 手机号或密码错误
-2026-10-14 16:48:31.023 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[用户登录], 入参：{"mobile":"18681531798","type":1,"password":"326582","verifyCode":null}, 请求类：UserController, 请求方法：login =================================== 
-2026-10-14 16:48:31.147 [http-nio-8080-exec-1] INFO  com.practice.flashsale.user.service.impl.UserServiceImpl - 用户登录成功, userId=4, mobile=18681531798
-2026-10-14 16:48:31.150 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [用户登录], 耗时: 124ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"token":"6239683d-d6c6-4a24-a047-6335f3995449","userInfo":{"id":4,"nickname":"用户550071","avatar":null}}} =================================== 
-2026-10-14 16:49:25.419 [http-nio-8080-exec-5] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":1}, 请求类：OrderController, 请求方法：doSeckill =================================== 
-2026-10-14 16:49:25.420 [http-nio-8080-exec-5] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：4
-2026-10-14 16:51:31.819 [http-nio-8080-exec-4] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":1}, 请求类：OrderController, 请求方法：doSeckill =================================== 
-2026-10-14 16:51:31.822 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：4
-2026-10-14 16:53:51.505 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 16:53:51.511 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 16:53:51.513 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 16:53:51.745 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 16:53:51.902 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 16:53:52.480 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 16:53:52.483 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2026-10-14 16:53:52.822 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
-2026-10-14 16:53:52.852 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown initiated...
-2026-10-14 16:53:52.854 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown completed.
-2026-10-14 17:03:44.922 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
-2026-10-14 17:03:44.983 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 74932 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
-2026-10-14 17:03:44.985 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
-2026-10-14 17:03:45.823 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-10-14 17:03:45.826 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2026-10-14 17:03:45.853 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 Redis repository interfaces.
-2026-10-14 17:03:46.722 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2026-10-14 17:03:46.738 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-10-14 17:03:46.739 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2026-10-14 17:03:46.740 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
-2026-10-14 17:03:46.820 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-10-14 17:03:46.820 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1795 ms
-2026-10-14 17:03:47.556 [main] INFO  org.redisson.Version - Redisson 3.52.0
-2026-10-14 17:03:47.996 [redisson-netty-1-5] INFO  org.redisson.connection.ConnectionsHolder - 1 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 17:03:48.109 [redisson-netty-1-20] INFO  org.redisson.connection.ConnectionsHolder - 24 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 17:03:48.389 [main] INFO  cloud.tianai.captcha.generator.AbstractImageCaptchaGenerator - 图片验证码[SpringMultiImageCaptchaGenerator]初始化...
-2026-10-14 17:03:49.076 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-10-14 17:03:49.089 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2026-10-14 17:03:49.091 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5673]
-2026-10-14 17:03:49.184 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#405603b6:0/SimpleConnection@2ef812b [delegate=amqp://seckill@127.0.0.1:5673//seckill, localPort=56051]
-2026-10-14 17:03:49.295 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 4.867 seconds (process running for 5.776)
-2026-10-14 17:03:56.118 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-10-14 17:03:56.118 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-10-14 17:03:56.119 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2026-10-14 17:03:56.368 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":1}, 请求类：OrderController, 请求方法：doSeckill =================================== 
-2026-10-14 17:03:56.370 [http-nio-8080-exec-1] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：4
-2026-10-14 17:03:59.739 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 17:03:59.740 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 17:03:59.741 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 17:04:00.352 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 17:04:00.368 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 17:04:00.368 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 17:04:00.371 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2026-10-14 17:04:00.686 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
-2026-10-14 17:12:37.641 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
-2026-10-14 17:12:37.702 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 28156 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
-2026-10-14 17:12:37.705 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
-2026-10-14 17:12:38.524 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-10-14 17:12:38.526 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2026-10-14 17:12:38.554 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 0 Redis repository interfaces.
-2026-10-14 17:12:39.380 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2026-10-14 17:12:39.396 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-10-14 17:12:39.398 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2026-10-14 17:12:39.398 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
-2026-10-14 17:12:39.465 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-10-14 17:12:39.465 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1720 ms
-2026-10-14 17:12:40.201 [main] INFO  org.redisson.Version - Redisson 3.52.0
-2026-10-14 17:12:40.607 [redisson-netty-1-5] INFO  org.redisson.connection.ConnectionsHolder - 1 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 17:12:40.688 [redisson-netty-1-20] INFO  org.redisson.connection.ConnectionsHolder - 24 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 17:12:40.958 [main] INFO  cloud.tianai.captcha.generator.AbstractImageCaptchaGenerator - 图片验证码[SpringMultiImageCaptchaGenerator]初始化...
-2026-10-14 17:12:41.623 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-10-14 17:12:41.638 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2026-10-14 17:12:41.641 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5673]
-2026-10-14 17:12:41.711 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#45e69324:0/SimpleConnection@1002c49e [delegate=amqp://seckill@127.0.0.1:5673//seckill, localPort=63583]
-2026-10-14 17:12:41.790 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 4.627 seconds (process running for 5.513)
-2026-10-14 17:12:45.691 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-10-14 17:12:45.691 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-10-14 17:12:45.693 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2026-10-14 17:12:45.941 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":1}, 请求类：OrderController, 请求方法：doSeckill =================================== 
-2026-10-14 17:12:45.944 [http-nio-8080-exec-1] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：4
-2026-10-14 17:12:46.045 [http-nio-8080-exec-1] INFO  com.practice.flashsale.order.service.impl.SeckillStockServiceImpl - ==> 秒杀库存预扣完成, key：seckill:stock:1:1, result：库存预扣成功
-2026-10-14 17:12:46.070 [http-nio-8080-exec-1] INFO  com.practice.flashsale.order.mq.SeckillOrderMessageSender - ==> 秒杀下单消息发送请求已提交, orderNo：2110297751295594496, userId：4, activityId：1, goodsId：1
-2026-10-14 17:12:46.072 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [秒杀下单], 耗时: 146ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"orderNo":"2110297751295594496","status":-1}} =================================== 
-2026-10-14 17:12:46.090 [rabbitConnectionFactory2] INFO  com.practice.flashsale.common.config.RabbitMQPublisherConfirmConfig - ==> 秒杀下单消息已被 Broker Confirm Ack, correlationId：2110297751295594496
-2026-10-14 17:12:46.104 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.consumer.SeckillOrderConsumer - ## 收到秒杀订单消息：SeckillOrderMqDTO(userId=4, activityId=1, goodsId=1, goodsName=iPhone 15 Pro Max 256GB 深空黑色, goodsImg=https://img.quanxiaoha.com/iphone15promax.jpg, seckillGoodsId=1, seckillPrice=8999.00, orderNo=2110297751295594496, requestTime=2026-10-14T17:12:45.958034600)
-2026-10-14 17:12:46.104 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 消费秒杀下单消息, orderNo: 2110297751295594496, userId: 4, activityId: 1, goodsId: 1
-2026-10-14 17:12:46.108 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Starting...
-2026-10-14 17:12:46.354 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.zaxxer.hikari.pool.HikariPool - SeckillHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@18d46bd1
-2026-10-14 17:12:46.356 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Start completed.
-2026-10-14 17:12:46.527 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - #### 秒杀扣库存耗时, orderNo：2110297751295594496, seckillGoodsId：1, cost：165 ms
-2026-10-14 17:12:46.603 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.service.impl.SeckillOrderResultNotifyServiceImpl - ==> 秒杀订单结果 SSE 连接不存在, 跳过推送, userId：4, orderNo：2110297751295594496
-2026-10-14 17:12:46.603 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 异步秒杀下单成功, orderNo：2110297751295594496
-2026-10-14 17:12:46.603 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - #### 秒杀订单消费链路总耗时, orderNo：2110297751295594496, cost：499 ms
-2026-10-14 17:12:46.603 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.consumer.SeckillOrderConsumer - ## 秒杀订单消息已 ACK, orderNo：2110297751295594496, deliveryTag：1
-2026-10-14 17:14:01.465 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 17:14:01.466 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 17:14:01.467 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 17:14:02.275 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 17:14:02.463 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 17:14:02.476 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 17:14:02.477 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2026-10-14 17:14:02.763 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
-2026-10-14 17:14:02.789 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown initiated...
-2026-10-14 17:14:02.795 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown completed.
-2026-10-14 18:08:48.873 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
-2026-10-14 18:08:48.935 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 78340 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
-2026-10-14 18:08:48.936 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
-2026-10-14 18:08:49.769 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-2026-10-14 18:08:49.772 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2026-10-14 18:08:49.802 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 0 Redis repository interfaces.
-2026-10-14 18:08:50.668 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2026-10-14 18:08:50.685 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-10-14 18:08:50.687 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
-2026-10-14 18:08:50.687 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
-2026-10-14 18:08:50.769 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-10-14 18:08:50.770 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1793 ms
-2026-10-14 18:08:51.591 [main] INFO  org.redisson.Version - Redisson 3.52.0
-2026-10-14 18:08:51.987 [redisson-netty-1-5] INFO  org.redisson.connection.ConnectionsHolder - 1 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 18:08:52.075 [redisson-netty-1-20] INFO  org.redisson.connection.ConnectionsHolder - 24 connections initialized for localhost/127.0.0.1:6379
-2026-10-14 18:08:52.352 [main] INFO  cloud.tianai.captcha.generator.AbstractImageCaptchaGenerator - 图片验证码[SpringMultiImageCaptchaGenerator]初始化...
-2026-10-14 18:08:53.100 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-10-14 18:08:53.112 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2026-10-14 18:08:53.114 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5673]
-2026-10-14 18:08:53.233 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#31fe0ce5:0/SimpleConnection@48e3017a [delegate=amqp://seckill@127.0.0.1:5673//seckill, localPort=50923]
-2026-10-14 18:08:53.375 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 5.022 seconds (process running for 5.909)
-2026-10-14 18:16:52.088 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 18:16:52.089 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 18:16:52.092 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
-2026-10-14 18:16:52.097 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 18:16:52.239 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 18:16:53.051 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
-2026-10-14 18:16:53.053 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2026-10-14 18:16:53.353 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-10-16 11:00:24.372 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-10-16 11:00:24.450 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 33848 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
+2026-10-16 11:00:24.452 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
+2026-10-16 11:00:25.771 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-10-16 11:00:25.775 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-10-16 11:00:25.821 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 20 ms. Found 0 Redis repository interfaces.
+2026-10-16 11:00:27.230 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-10-16 11:00:27.251 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-10-16 11:00:27.254 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-10-16 11:00:27.254 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2026-10-16 11:00:27.360 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-10-16 11:00:27.360 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2860 ms
+2026-10-16 11:00:28.943 [main] INFO  cloud.tianai.captcha.generator.AbstractImageCaptchaGenerator - 图片验证码[SpringMultiImageCaptchaGenerator]初始化...
+2026-10-16 11:00:29.194 [main] INFO  org.redisson.Version - Redisson 3.52.0
+2026-10-16 11:00:29.580 [redisson-netty-4-6] INFO  org.redisson.connection.ConnectionsHolder - 1 connections initialized for localhost/127.0.0.1:6379
+2026-10-16 11:00:29.661 [redisson-netty-4-20] INFO  org.redisson.connection.ConnectionsHolder - 24 connections initialized for localhost/127.0.0.1:6379
+2026-10-16 11:00:30.459 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-10-16 11:00:30.475 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-10-16 11:00:30.478 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5673]
+2026-10-16 11:00:30.857 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#2c92f094:0/SimpleConnection@18edbed9 [delegate=amqp://seckill@127.0.0.1:5673//seckill, localPort=56105]
+2026-10-16 11:00:30.979 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 7.176 seconds (process running for 8.531)
+2026-10-16 11:02:21.539 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-16 11:02:21.539 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-10-16 11:02:21.541 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-10-16 11:02:21.756 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[获取秒杀令牌], 入参：{"activityId":1,"goodsId":2}, 请求类：OrderController, 请求方法：getSeckillToken =================================== 
+2026-10-16 11:02:22.125 [http-nio-8080-exec-1] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 生成秒杀令牌, userId：2, activityId：1, goodsId：2, tokenKey：seckill:order:token:1:2:2
+2026-10-16 11:02:22.128 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [获取秒杀令牌], 耗时: 385ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"token":"VgcvXkItJmIbYOa3lSmIPxjFZ3LeNo_x5s4fful6aiM","expireSeconds":60}} =================================== 
+2026-10-16 11:03:05.297 [http-nio-8080-exec-2] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /seckill/order request error, errorCode: 10001, errorMessage: token 秒杀令牌不能为空, 当前值: 'null'; 
+2026-10-16 11:03:41.383 [http-nio-8080-exec-5] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[手动预热商品缓存], 入参：{"activityId":1}, 请求类：AdminGoodsController, 请求方法：preheatActivityGoods =================================== 
+2026-10-16 11:03:41.383 [http-nio-8080-exec-5] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 开始预热活动商品缓存, activityId: 1
+2026-10-16 11:03:41.405 [http-nio-8080-exec-5] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Starting...
+2026-10-16 11:03:41.634 [http-nio-8080-exec-5] INFO  com.zaxxer.hikari.pool.HikariPool - SeckillHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@17ce4030
+2026-10-16 11:03:41.635 [http-nio-8080-exec-5] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Start completed.
+2026-10-16 11:03:41.879 [http-nio-8080-exec-5] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 活动布隆过滤器写入成功, activityId：1
+2026-10-16 11:03:41.885 [http-nio-8080-exec-5] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 商品布隆过滤器写入成功, activityId：1, 商品数：6
+2026-10-16 11:03:41.909 [http-nio-8080-exec-5] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热商品列表缓存成功, key: seckill:goods:list:1, ttlSeconds: 6614777
+2026-10-16 11:03:41.956 [http-nio-8080-exec-5] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热活动商品缓存完成, activityId: 1, 商品数: 6, 耗时: 573ms
+2026-10-16 11:03:41.958 [http-nio-8080-exec-5] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:1, stock：1, TTL：6614777s
+2026-10-16 11:03:41.959 [http-nio-8080-exec-5] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:2, stock：88, TTL：6614777s
+2026-10-16 11:03:41.960 [http-nio-8080-exec-5] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:3, stock：14, TTL：6614777s
+2026-10-16 11:03:41.961 [http-nio-8080-exec-5] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:4, stock：188, TTL：6614777s
+2026-10-16 11:03:41.962 [http-nio-8080-exec-5] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:5, stock：90, TTL：6614777s
+2026-10-16 11:03:41.963 [http-nio-8080-exec-5] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:6, stock：9, TTL：6614777s
+2026-10-16 11:03:41.964 [http-nio-8080-exec-5] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [手动预热商品缓存], 耗时: 580ms, 出参: {"success":true,"message":null,"errorCode":null,"data":6} =================================== 
+2026-10-16 11:03:54.366 [http-nio-8080-exec-4] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[获取秒杀令牌], 入参：{"activityId":1,"goodsId":2}, 请求类：OrderController, 请求方法：getSeckillToken =================================== 
+2026-10-16 11:03:54.369 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 生成秒杀令牌, userId：2, activityId：1, goodsId：2, tokenKey：seckill:order:token:1:2:2
+2026-10-16 11:03:54.369 [http-nio-8080-exec-4] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [获取秒杀令牌], 耗时: 3ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"token":"IT8ZkZRRJLbZfLXlOU9g8TXWSTE43aJGJ1jGiitNW1Q","expireSeconds":60}} =================================== 
+2026-10-16 11:04:21.439 [http-nio-8080-exec-3] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":2,"token":"IT8ZkZRRJLbZfLXlOU9g8TXWSTE43aJGJ1jGiitNW1Q"}, 请求类：OrderController, 请求方法：doSeckill =================================== 
+2026-10-16 11:04:21.441 [http-nio-8080-exec-3] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：2
+2026-10-16 11:04:21.514 [http-nio-8080-exec-3] INFO  com.practice.flashsale.order.service.impl.SeckillStockServiceImpl - ==> 秒杀库存预扣完成, key：seckill:stock:1:2, result：库存预扣成功
+2026-10-16 11:04:21.538 [http-nio-8080-exec-3] INFO  com.practice.flashsale.order.mq.SeckillOrderMessageSender - ==> 秒杀下单消息发送请求已提交, orderNo：2110929814021378048, userId：2, activityId：1, goodsId：2
+2026-10-16 11:04:21.541 [http-nio-8080-exec-3] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [秒杀下单], 耗时: 101ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"orderNo":"2110929814021378048","status":-1}} =================================== 
+2026-10-16 11:04:21.558 [rabbitConnectionFactory2] INFO  com.practice.flashsale.common.config.RabbitMQPublisherConfirmConfig - ==> 秒杀下单消息已被 Broker Confirm Ack, correlationId：2110929814021378048
+2026-10-16 11:04:21.570 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.consumer.SeckillOrderConsumer - ## 收到秒杀订单消息：SeckillOrderMqDTO(userId=2, activityId=1, goodsId=2, goodsName=MacBook Pro 14英寸 M3 Pro, goodsImg=https://img.quanxiaoha.com/macbookpro14.jpg, seckillGoodsId=2, seckillPrice=12999.00, orderNo=2110929814021378048, requestTime=2026-10-16T11:04:21.445192600)
+2026-10-16 11:04:21.571 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 消费秒杀下单消息, orderNo: 2110929814021378048, userId: 2, activityId: 1, goodsId: 2
+2026-10-16 11:04:21.683 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - #### 秒杀扣库存耗时, orderNo：2110929814021378048, seckillGoodsId：2, cost：103 ms
+2026-10-16 11:04:21.708 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.service.impl.SeckillOrderResultNotifyServiceImpl - ==> 秒杀订单结果 SSE 连接不存在, 跳过推送, userId：2, orderNo：2110929814021378048
+2026-10-16 11:04:21.708 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 异步秒杀下单成功, orderNo：2110929814021378048
+2026-10-16 11:04:21.708 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - #### 秒杀订单消费链路总耗时, orderNo：2110929814021378048, cost：137 ms
+2026-10-16 11:04:21.709 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  com.practice.flashsale.order.consumer.SeckillOrderConsumer - ## 秒杀订单消息已 ACK, orderNo：2110929814021378048, deliveryTag：1
+2026-10-16 11:04:38.456 [http-nio-8080-exec-6] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":2,"token":"IT8ZkZRRJLbZfLXlOU9g8TXWSTE43aJGJ1jiitNW1Q"}, 请求类：OrderController, 请求方法：doSeckill =================================== 
+2026-10-16 11:04:38.457 [http-nio-8080-exec-6] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：2
+2026-10-16 11:04:38.458 [http-nio-8080-exec-6] WARN  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 秒杀令牌校验失败, userId：2, activityId：1, goodsId：2, tokenKey：seckill:order:token:1:2:2
+2026-10-16 11:04:38.458 [http-nio-8080-exec-6] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /seckill/order request fail, errorCode: 40007, errorMessage: 秒杀令牌无效，请刷新后重试
+2026-10-16 11:04:46.119 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
+2026-10-16 11:04:46.120 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
+2026-10-16 11:04:46.121 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
+2026-10-16 11:04:46.279 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2026-10-16 11:04:46.300 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2026-10-16 11:04:46.915 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2026-10-16 11:04:46.917 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-10-16 11:04:47.221 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-10-16 11:04:47.249 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown initiated...
+2026-10-16 11:04:47.255 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown completed.
+2026-10-16 11:41:33.616 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-10-16 11:41:33.678 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 31436 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
+2026-10-16 11:41:33.679 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
+2026-10-16 11:41:34.481 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-10-16 11:41:34.484 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-10-16 11:41:34.519 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 Redis repository interfaces.
+2026-10-16 11:41:35.414 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-10-16 11:41:35.433 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-10-16 11:41:35.435 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-10-16 11:41:35.436 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2026-10-16 11:41:35.511 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-10-16 11:41:35.511 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1792 ms
+2026-10-16 11:41:36.842 [main] INFO  cloud.tianai.captcha.generator.AbstractImageCaptchaGenerator - 图片验证码[SpringMultiImageCaptchaGenerator]初始化...
+2026-10-16 11:41:37.032 [main] INFO  org.redisson.Version - Redisson 3.52.0
+2026-10-16 11:41:37.324 [redisson-netty-4-6] INFO  org.redisson.connection.ConnectionsHolder - 1 connections initialized for localhost/127.0.0.1:6379
+2026-10-16 11:41:37.418 [redisson-netty-4-20] INFO  org.redisson.connection.ConnectionsHolder - 24 connections initialized for localhost/127.0.0.1:6379
+2026-10-16 11:41:38.090 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-10-16 11:41:38.102 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-10-16 11:41:38.105 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5673]
+2026-10-16 11:41:38.219 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#6ee1ddcf:0/SimpleConnection@3da701a1 [delegate=amqp://seckill@127.0.0.1:5673//seckill, localPort=54411]
+2026-10-16 11:41:38.343 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 5.204 seconds (process running for 6.11)
+2026-10-16 11:41:59.641 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-16 11:41:59.641 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-10-16 11:41:59.642 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-10-16 11:42:00.219 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[手动预热商品缓存], 入参：{"activityId":1}, 请求类：AdminGoodsController, 请求方法：preheatActivityGoods =================================== 
+2026-10-16 11:42:00.219 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 开始预热活动商品缓存, activityId: 1
+2026-10-16 11:42:00.243 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Starting...
+2026-10-16 11:42:00.469 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.pool.HikariPool - SeckillHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@e170330
+2026-10-16 11:42:00.471 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Start completed.
+2026-10-16 11:42:00.692 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 活动布隆过滤器写入成功, activityId：1
+2026-10-16 11:42:00.717 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 商品布隆过滤器写入成功, activityId：1, 商品数：6
+2026-10-16 11:42:00.752 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热商品列表缓存成功, key: seckill:goods:list:1, ttlSeconds: 6612478
+2026-10-16 11:42:00.798 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热活动商品缓存完成, activityId: 1, 商品数: 6, 耗时: 579ms
+2026-10-16 11:42:00.801 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:1, stock：1, TTL：6612478s
+2026-10-16 11:42:00.803 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:2, stock：87, TTL：6612478s
+2026-10-16 11:42:00.804 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:3, stock：14, TTL：6612478s
+2026-10-16 11:42:00.805 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:4, stock：188, TTL：6612478s
+2026-10-16 11:42:00.806 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:5, stock：90, TTL：6612478s
+2026-10-16 11:42:00.807 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:6, stock：9, TTL：6612478s
+2026-10-16 11:42:00.808 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [手动预热商品缓存], 耗时: 605ms, 出参: {"success":true,"message":null,"errorCode":null,"data":6} =================================== 
+2026-10-16 11:42:20.767 [http-nio-8080-exec-2] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[获取秒杀令牌], 入参：{"activityId":1,"goodsId":3}, 请求类：OrderController, 请求方法：getSeckillToken =================================== 
+2026-10-16 11:42:20.785 [http-nio-8080-exec-2] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 生成秒杀令牌, userId：2, activityId：1, goodsId：3, tokenKey：seckill:order:token:1:3:2
+2026-10-16 11:42:20.787 [http-nio-8080-exec-2] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [获取秒杀令牌], 耗时: 20ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"token":"QVfs-8yEt0GW8AbZ74dKpLyMqL-hoSnd7OXPoPwkL-Q","expireSeconds":60}} =================================== 
+2026-10-16 11:42:37.929 [http-nio-8080-exec-4] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":3,"token":"QVfs-8yEt0GW8AbZ74dKpLyMqL-hoSnd7OXPoPwkL-Q"}, 请求类：OrderController, 请求方法：doSeckill =================================== 
+2026-10-16 11:42:37.930 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：2
+2026-10-16 11:42:37.939 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 秒杀令牌校验通过并删除, userId：2, activityId：1, goodsId：3, tokenKey：seckill:order:token:1:3:2
+2026-10-16 11:42:37.989 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.SeckillStockServiceImpl - ==> 秒杀库存预扣完成, key：seckill:stock:1:3, result：库存预扣成功
+2026-10-16 11:42:38.008 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.mq.SeckillOrderMessageSender - ==> 秒杀下单消息发送请求已提交, orderNo：2110939446173392896, userId：2, activityId：1, goodsId：3
+2026-10-16 11:42:38.010 [http-nio-8080-exec-4] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [秒杀下单], 耗时: 80ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"orderNo":"2110939446173392896","status":-1}} =================================== 
+2026-10-16 11:42:38.028 [rabbitConnectionFactory2] INFO  com.practice.flashsale.common.config.RabbitMQPublisherConfirmConfig - ==> 秒杀下单消息已被 Broker Confirm Ack, correlationId：2110939446173392896
+2026-10-16 11:42:38.039 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] INFO  com.practice.flashsale.order.consumer.SeckillOrderConsumer - ## 收到秒杀订单消息：SeckillOrderMqDTO(userId=2, activityId=1, goodsId=3, goodsName=AirPods Pro 2 USB-C, goodsImg=https://img.quanxiaoha.com/airpodspro2.jpg, seckillGoodsId=3, seckillPrice=1499.00, orderNo=2110939446173392896, requestTime=2026-10-16T11:42:37.941153800)
+2026-10-16 11:42:38.039 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 消费秒杀下单消息, orderNo: 2110939446173392896, userId: 2, activityId: 1, goodsId: 3
+2026-10-16 11:42:38.124 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - #### 秒杀扣库存耗时, orderNo：2110939446173392896, seckillGoodsId：3, cost：81 ms
+2026-10-16 11:42:38.151 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] INFO  com.practice.flashsale.order.service.impl.SeckillOrderResultNotifyServiceImpl - ==> 秒杀订单结果 SSE 连接不存在, 跳过推送, userId：2, orderNo：2110939446173392896
+2026-10-16 11:42:38.151 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 异步秒杀下单成功, orderNo：2110939446173392896
+2026-10-16 11:42:38.151 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - #### 秒杀订单消费链路总耗时, orderNo：2110939446173392896, cost：112 ms
+2026-10-16 11:42:38.151 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] INFO  com.practice.flashsale.order.consumer.SeckillOrderConsumer - ## 秒杀订单消息已 ACK, orderNo：2110939446173392896, deliveryTag：1
+2026-10-16 11:42:52.308 [http-nio-8080-exec-3] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":3,"token":"QVfs-8yEt0GW8AbZ74dKpLyMqL-hoSnd7OXPoPwkL-Q"}, 请求类：OrderController, 请求方法：doSeckill =================================== 
+2026-10-16 11:42:52.310 [http-nio-8080-exec-3] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：2
+2026-10-16 11:42:52.313 [http-nio-8080-exec-3] WARN  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 秒杀令牌校验失败, userId：2, activityId：1, goodsId：3, tokenKey：seckill:order:token:1:3:2
+2026-10-16 11:42:52.319 [http-nio-8080-exec-3] WARN  com.practice.flashsale.common.exception.GlobalExceptionHandler - /seckill/order request fail, errorCode: 40007, errorMessage: 秒杀令牌无效，请刷新后重试
+2026-10-16 11:43:39.598 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
+2026-10-16 11:43:39.599 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
+2026-10-16 11:43:39.600 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
+2026-10-16 11:43:39.628 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2026-10-16 11:43:39.723 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2026-10-16 11:43:40.561 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2026-10-16 11:43:40.564 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-10-16 11:43:40.871 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-10-16 11:43:40.903 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown initiated...
+2026-10-16 11:43:40.908 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown completed.
+2026-10-16 15:00:23.714 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-10-16 15:00:23.779 [main] INFO  com.practice.flashsale.app.SeckillApplication - Starting SeckillApplication using Java 17.0.19 with PID 27740 (D:\java_practice\FlashSaleSystem\seckill-app\target\classes started by am0006 in D:\java_practice\FlashSaleSystem)
+2026-10-16 15:00:23.781 [main] INFO  com.practice.flashsale.app.SeckillApplication - The following 1 profile is active: "dev"
+2026-10-16 15:00:24.771 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-10-16 15:00:24.775 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-10-16 15:00:24.809 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 Redis repository interfaces.
+2026-10-16 15:00:25.833 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-10-16 15:00:25.853 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-10-16 15:00:25.855 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-10-16 15:00:25.855 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2026-10-16 15:00:25.936 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-10-16 15:00:25.936 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2111 ms
+2026-10-16 15:00:27.232 [main] INFO  cloud.tianai.captcha.generator.AbstractImageCaptchaGenerator - 图片验证码[SpringMultiImageCaptchaGenerator]初始化...
+2026-10-16 15:00:27.458 [main] INFO  org.redisson.Version - Redisson 3.52.0
+2026-10-16 15:00:27.776 [redisson-netty-4-6] INFO  org.redisson.connection.ConnectionsHolder - 1 connections initialized for localhost/127.0.0.1:6379
+2026-10-16 15:00:27.878 [redisson-netty-4-20] INFO  org.redisson.connection.ConnectionsHolder - 24 connections initialized for localhost/127.0.0.1:6379
+2026-10-16 15:00:28.612 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-10-16 15:00:28.623 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-10-16 15:00:28.625 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5673]
+2026-10-16 15:00:28.929 [main] INFO  org.springframework.amqp.rabbit.connection.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#2e7517aa:0/SimpleConnection@bafc754 [delegate=amqp://seckill@127.0.0.1:5673//seckill, localPort=55061]
+2026-10-16 15:00:29.093 [main] INFO  com.practice.flashsale.app.SeckillApplication - Started SeckillApplication in 5.925 seconds (process running for 7.176)
+2026-10-16 15:02:52.164 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-16 15:02:52.164 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-10-16 15:02:52.165 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-10-16 15:02:52.931 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[手动预热商品缓存], 入参：{"activityId":1}, 请求类：AdminGoodsController, 请求方法：preheatActivityGoods =================================== 
+2026-10-16 15:02:52.931 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 开始预热活动商品缓存, activityId: 1
+2026-10-16 15:02:52.963 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Starting...
+2026-10-16 15:02:53.217 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.pool.HikariPool - SeckillHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@25d5d54c
+2026-10-16 15:02:53.218 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Start completed.
+2026-10-16 15:02:53.479 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 活动布隆过滤器写入成功, activityId：1
+2026-10-16 15:02:53.491 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 商品布隆过滤器写入成功, activityId：1, 商品数：6
+2026-10-16 15:02:53.529 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热商品列表缓存成功, key: seckill:goods:list:1, ttlSeconds: 6600425
+2026-10-16 15:02:53.593 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热活动商品缓存完成, activityId: 1, 商品数: 6, 耗时: 662ms
+2026-10-16 15:02:53.597 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:1, stock：1, TTL：6600425s
+2026-10-16 15:02:53.598 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀令牌大闸成功, key：seckill:token:gate:1:1, tokenCount：5, multiplier：5, TTL：6600425s
+2026-10-16 15:02:53.599 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:2, stock：87, TTL：6600425s
+2026-10-16 15:02:53.601 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀令牌大闸成功, key：seckill:token:gate:1:2, tokenCount：435, multiplier：5, TTL：6600425s
+2026-10-16 15:02:53.603 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:3, stock：13, TTL：6600425s
+2026-10-16 15:02:53.604 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀令牌大闸成功, key：seckill:token:gate:1:3, tokenCount：65, multiplier：5, TTL：6600425s
+2026-10-16 15:02:53.605 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:4, stock：188, TTL：6600425s
+2026-10-16 15:02:53.608 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀令牌大闸成功, key：seckill:token:gate:1:4, tokenCount：940, multiplier：5, TTL：6600425s
+2026-10-16 15:02:53.610 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:5, stock：90, TTL：6600425s
+2026-10-16 15:02:53.611 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀令牌大闸成功, key：seckill:token:gate:1:5, tokenCount：450, multiplier：5, TTL：6600425s
+2026-10-16 15:02:53.612 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀库存成功, key：seckill:stock:1:6, stock：9, TTL：6600425s
+2026-10-16 15:02:53.614 [http-nio-8080-exec-1] INFO  com.practice.flashsale.goods.service.impl.GoodsServiceImpl - ==> 预热秒杀令牌大闸成功, key：seckill:token:gate:1:6, tokenCount：45, multiplier：5, TTL：6600425s
+2026-10-16 15:02:53.615 [http-nio-8080-exec-1] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [手动预热商品缓存], 耗时: 702ms, 出参: {"success":true,"message":null,"errorCode":null,"data":6} =================================== 
+2026-10-16 15:05:52.910 [http-nio-8080-exec-9] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[获取秒杀令牌], 入参：{"activityId":1,"goodsId":4}, 请求类：OrderController, 请求方法：getSeckillToken =================================== 
+2026-10-16 15:05:52.970 [http-nio-8080-exec-9] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 生成秒杀令牌, userId：2, activityId：1, goodsId：4, tokenKey：seckill:order:token:1:4:2
+2026-10-16 15:05:52.973 [http-nio-8080-exec-9] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [获取秒杀令牌], 耗时: 61ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"token":"cpW5HCwQagMNCC343jYs95-5SUDtsswgj9vAU9bzLO4","expireSeconds":60}} =================================== 
+2026-10-16 15:06:20.185 [http-nio-8080-exec-4] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求开始：[秒杀下单], 入参：{"activityId":1,"goodsId":4,"token":"cpW5HCwQagMNCC343jYs95-5SUDtsswgj9vAU9bzLO4"}, 请求类：OrderController, 请求方法：doSeckill =================================== 
+2026-10-16 15:06:20.185 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 当前登录用户 ID：2
+2026-10-16 15:06:20.189 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 秒杀令牌校验通过并删除, userId：2, activityId：1, goodsId：4, tokenKey：seckill:order:token:1:4:2
+2026-10-16 15:06:20.242 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.service.impl.SeckillStockServiceImpl - ==> 秒杀库存预扣完成, key：seckill:stock:1:4, result：库存预扣成功
+2026-10-16 15:06:20.262 [http-nio-8080-exec-4] INFO  com.practice.flashsale.order.mq.SeckillOrderMessageSender - ==> 秒杀下单消息发送请求已提交, orderNo：2110990710005542912, userId：2, activityId：1, goodsId：4
+2026-10-16 15:06:20.264 [http-nio-8080-exec-4] INFO  com.practice.flashsale.common.aspect.ApiOperationLogAspect - ====== 请求结束: [秒杀下单], 耗时: 79ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"orderNo":"2110990710005542912","status":-1}} =================================== 
+2026-10-16 15:06:20.298 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  com.practice.flashsale.order.consumer.SeckillOrderConsumer - ## 收到秒杀订单消息：SeckillOrderMqDTO(userId=2, activityId=1, goodsId=4, goodsName=iPhone 18 Pro Max 512GB 勃艮第酒红色, goodsImg=https://img.quanxiaoha.com/iphone18promax.jpg, seckillGoodsId=4, seckillPrice=10999.00, orderNo=2110990710005542912, requestTime=2026-10-16T15:06:20.192209600)
+2026-10-16 15:06:20.299 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 消费秒杀下单消息, orderNo: 2110990710005542912, userId: 2, activityId: 1, goodsId: 4
+2026-10-16 15:06:20.313 [rabbitConnectionFactory2] INFO  com.practice.flashsale.common.config.RabbitMQPublisherConfirmConfig - ==> 秒杀下单消息已被 Broker Confirm Ack, correlationId：2110990710005542912
+2026-10-16 15:06:20.393 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - #### 秒杀扣库存耗时, orderNo：2110990710005542912, seckillGoodsId：4, cost：88 ms
+2026-10-16 15:06:20.413 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  com.practice.flashsale.order.service.impl.SeckillOrderResultNotifyServiceImpl - ==> 秒杀订单结果 SSE 连接不存在, 跳过推送, userId：2, orderNo：2110990710005542912
+2026-10-16 15:06:20.413 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - ==> 异步秒杀下单成功, orderNo：2110990710005542912
+2026-10-16 15:06:20.413 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  com.practice.flashsale.order.service.impl.OrderServiceImpl - #### 秒杀订单消费链路总耗时, orderNo：2110990710005542912, cost：115 ms
+2026-10-16 15:06:20.414 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  com.practice.flashsale.order.consumer.SeckillOrderConsumer - ## 秒杀订单消息已 ACK, orderNo：2110990710005542912, deliveryTag：1
+2026-10-16 15:07:33.895 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
+2026-10-16 15:07:33.897 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
+2026-10-16 15:07:33.898 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Waiting for workers to finish.
+2026-10-16 15:07:34.298 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2026-10-16 15:07:34.518 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#2-2] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2026-10-16 15:07:34.534 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-6] INFO  org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2026-10-16 15:07:34.536 [SpringApplicationShutdownHook] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-10-16 15:07:34.872 [tomcat-shutdown] INFO  org.springframework.boot.web.embedded.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-10-16 15:07:34.902 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown initiated...
+2026-10-16 15:07:34.908 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SeckillHikariPool - Shutdown completed.

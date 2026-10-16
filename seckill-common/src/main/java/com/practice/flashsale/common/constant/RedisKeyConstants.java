@@ -137,6 +137,59 @@ public class RedisKeyConstants {
     }
 
     /**
+     * 秒杀用户维度限流 Key 前缀
+     */
+    public static final String SECKILL_RATE_LIMIT_USER_PREFIX = "seckill:rate:user:";
+
+    /**
+     * 秒杀 IP 维度限流 Key 前缀
+     */
+    public static final String SECKILL_RATE_LIMIT_IP_PREFIX = "seckill:rate:ip:";
+
+    /**
+     * 构建秒杀用户维度限流 Key
+     */
+    public static String buildSeckillRateLimitUserKey(Long activityId, Long goodsId, Long userId) {
+        return SECKILL_RATE_LIMIT_USER_PREFIX + activityId + ":" + goodsId + ":" + userId;
+    }
+
+    /**
+     * 构建秒杀 IP 维度限流 Key
+     */
+    public static String buildSeckillRateLimitIpKey(Long activityId, Long goodsId, String clientIp) {
+        return SECKILL_RATE_LIMIT_IP_PREFIX + activityId + ":" + goodsId + ":" + clientIp;
+    }
+
+    /**
+     * 秒杀下单令牌 Key 前缀
+     */
+    public static final String SECKILL_ORDER_TOKEN_PREFIX = "seckill:order:token:";
+
+    /**
+     * 秒杀下单令牌过期时间（单位：秒）
+     */
+    public static final long SECKILL_ORDER_TOKEN_TTL_SECONDS = 60;
+
+    /**
+     * 构建秒杀下单令牌 Key
+     */
+    public static String buildSeckillOrderTokenKey(Long activityId, Long goodsId, Long userId) {
+        return SECKILL_ORDER_TOKEN_PREFIX + activityId + ":" + goodsId + ":" + userId;
+    }
+
+    /**
+     * 秒杀令牌大闸 Key 前缀
+     */
+    public static final String SECKILL_TOKEN_GATE_PREFIX = "seckill:token:gate:";
+
+    /**
+     * 构建秒杀令牌大闸 Key
+     */
+    public static String buildSeckillTokenGateKey(Long activityId, Long goodsId) {
+        return SECKILL_TOKEN_GATE_PREFIX + activityId + ":" + goodsId;
+    }
+
+    /**
      * 根据活动结束时间动态计算缓存 TTL（秒）
      *
      * 公式：TTL = (活动结束时间 - 当前时间) + 安全缓冲时间

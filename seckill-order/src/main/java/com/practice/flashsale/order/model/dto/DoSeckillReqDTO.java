@@ -1,5 +1,6 @@
 package com.practice.flashsale.order.model.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -32,4 +33,10 @@ public class DoSeckillReqDTO {
     @NotNull(message = "商品 ID 不能为空")
     @Positive(message = "商品 ID 不合法")
     private Long goodsId;
+
+    /**
+     * 秒杀令牌
+     */
+    @NotBlank(message = "秒杀令牌不能为空")
+    private String token;
 }

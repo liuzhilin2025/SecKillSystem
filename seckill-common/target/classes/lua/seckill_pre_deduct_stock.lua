@@ -55,7 +55,7 @@ redis.call('SET', KEYS[3], ARGV[4], 'EX', ARGV[1])
 redis.call('SET', KEYS[2], ARGV[5], 'EX', ARGV[1])
 
 -- 6. 库存充足，原子递减库存
-redis.call('DECR', KEYS[1])
+local remainStock = redis.call('DECR', KEYS[1])
 
 -- 如果刚好扣到 0，写入售罄标记
 if tonumber(remainStock) <= 0 then

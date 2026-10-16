@@ -9,6 +9,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.function.Function;
@@ -40,8 +42,11 @@ public class ApiOperationLogAspect {
 
         // 请求入参
         Object[] args = joinPoint.getArgs();
-        // 入参转 JSON 字符串
-        String argsJsonStr = Arrays.stream(args).map(toJsonStr()).collect(Collectors.joining(", "));
+        // 入参转 JSON 字符串（Servlet 请求/响应对象无法序列化，需要过滤掉）
+        String argsJsonStr = Arrays.stream(args)
+                .filter(arg -> !(arg instanceof ServletRequest) && !(arg instanceof ServletResponse))
+                .map(toJsonStr())
+                .collect(Collectors.joining(", "));
 
         // 功能描述信息
         String description = getApiOperationLogDescription(joinPoint);
@@ -87,6 +92,14 @@ public class ApiOperationLogAspect {
      * @return
      */
     private Function<Object, String> toJsonStr() {
-        return JsonUtils::toJsonString;
+        return obj -> {
+            try {
+                return JsonUtils.toJsonString(obj);
+            } catch (Exception e) {
+                // 个别参数无法序列化时，不能影响正常业务逻辑
+                log.warn("==> 接口日志入参序列化失败, 参数类型：{}", obj == null ? "null" : obj.getClass().getName());
+                return String.valueOf(obj);
+            }
+        };
     }
 }

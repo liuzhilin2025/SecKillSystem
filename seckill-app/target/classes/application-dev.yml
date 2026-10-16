@@ -91,3 +91,9 @@ thread.pool:
   queue-capacity: 100
   # 空闲线程存活时间（秒）
   keep-alive-seconds: 60
+
+# 秒杀业务配置
+seckill:
+  token-gate:
+    multiplier: 5 # 秒杀令牌大闸放大系数：大闸令牌数量 = 秒杀库存 * multiplier
+

@@ -3,17 +3,10 @@ package com.practice.flashsale.order.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.practice.flashsale.common.config.RabbitMQConfig;
 import com.practice.flashsale.common.constant.RedisKeyConstants;
-import com.practice.flashsale.common.entity.Goods;
-import com.practice.flashsale.common.entity.SeckillActivity;
-import com.practice.flashsale.common.entity.SeckillGoods;
 import com.practice.flashsale.common.entity.SeckillOrder;
 import com.practice.flashsale.common.enums.ResultCodeEnum;
 import com.practice.flashsale.common.exception.BizException;
-import com.practice.flashsale.common.mapper.GoodsMapper;
-import com.practice.flashsale.common.mapper.SeckillActivityMapper;
 import com.practice.flashsale.common.mapper.SeckillGoodsMapper;
 import com.practice.flashsale.common.mapper.SeckillOrderMapper;
 import com.practice.flashsale.common.model.dto.SeckillActivityGoodsMetaDTO;
@@ -23,9 +16,11 @@ import com.practice.flashsale.order.enums.OrderStatusEnum;
 import com.practice.flashsale.order.enums.SeckillStockDeductResultEnum;
 import com.practice.flashsale.order.model.dto.DoSeckillReqDTO;
 import com.practice.flashsale.order.model.dto.FindSeckillOrderResultReqDTO;
+import com.practice.flashsale.order.model.dto.GetSeckillTokenReqDTO;
 import com.practice.flashsale.order.model.dto.SeckillOrderMqDTO;
 import com.practice.flashsale.order.model.vo.DoSeckillRspVO;
 import com.practice.flashsale.order.model.vo.FindSeckillOrderResultRspVO;
+import com.practice.flashsale.order.model.vo.GetSeckillTokenRspVO;
 import com.practice.flashsale.order.mq.SeckillOrderMessageSender;
 import com.practice.flashsale.order.service.OrderService;
 import com.practice.flashsale.order.service.SeckillOrderResultNotifyService;
@@ -33,15 +28,22 @@ import com.practice.flashsale.order.service.SeckillStockService;
 import com.practice.flashsale.order.utils.OrderLockUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -55,19 +57,16 @@ import java.util.concurrent.TimeUnit;
 public class OrderServiceImpl implements OrderService {
 
     @Resource
-    private SeckillActivityMapper seckillActivityMapper;
-
-    @Resource
     private SeckillGoodsMapper seckillGoodsMapper;
-
-    @Resource
-    private GoodsMapper goodsMapper;
 
     @Resource
     private SeckillOrderMapper seckillOrderMapper;
 
     @Resource
     private OrderLockUtils orderLockUtils;
+
+    @Resource
+    private SeckillStockService seckillStockService;
 
     @Resource
     private SeckillOrderMessageSender seckillOrderMessageSender;
@@ -78,14 +77,39 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private SeckillOrderResultNotifyService seckillOrderResultNotifyService;
 
-    @Resource
-    private SeckillStockService seckillStockService;
-
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    @Resource(name = "seckillOrderQueueDrainExecutor")
+    private ThreadPoolTaskExecutor seckillOrderQueueDrainExecutor;
 
     @Autowired
     private TransactionTemplate transactionTemplate;
+
+    /**
+     * 秒杀令牌随机数生成器
+     */
+    private static final SecureRandom SECKILL_TOKEN_RANDOM = new SecureRandom();
+
+    /**
+     * 秒杀令牌校验并删除 Lua 脚本
+     */
+    private final DefaultRedisScript<Long> seckillCheckTokenScript;
+
+    /**
+     * 秒杀令牌大闸 Lua 脚本
+     */
+    private final DefaultRedisScript<String> seckillTokenGateScript;
+
+    /**
+     * 初始化秒杀令牌校验并删除 Lua 脚本
+     */
+    public OrderServiceImpl() {
+        this.seckillCheckTokenScript = new DefaultRedisScript<>();
+        this.seckillCheckTokenScript.setLocation(new ClassPathResource("lua/seckill_check_token.lua"));
+        this.seckillCheckTokenScript.setResultType(Long.class);
+
+        this.seckillTokenGateScript = new DefaultRedisScript<>();
+        this.seckillTokenGateScript.setLocation(new ClassPathResource("lua/seckill_token_gate.lua"));
+        this.seckillTokenGateScript.setResultType(String.class);
+    }
 
     /**
      * 保存秒杀订单异步处理状态
@@ -108,14 +132,47 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public DoSeckillRspVO doSeckill(DoSeckillReqDTO dto) {
+        // 获取登录用户 ID
+        long userId = StpUtil.getLoginIdAsLong();
+
+        try {
+            // 将秒杀下单核心逻辑, 提交到固定大小线程池中，限制同一时刻真正进入下单链路的请求数量
+            return seckillOrderQueueDrainExecutor.submit(() -> doSeckillInternal(dto, userId)).get();
+        } catch (RejectedExecutionException e) { // 线程池队列已满，说明当前瞬时请求过多，直接快速失败
+            log.warn("==> 秒杀下单队列泄洪线程池已满, activityId: {}, goodsId: {}, userId: {}",
+                    dto.getActivityId(), dto.getGoodsId(), userId);
+
+            throw new BizException(ResultCodeEnum.SECKILL_SYSTEM_BUSY);
+        } catch (InterruptedException e) { // 当前请求线程被中断，快速失败
+            Thread.currentThread().interrupt();
+            log.warn("==> 秒杀下单任务被中断, activityId: {}, goodsId: {}, userId: {}",
+                    dto.getActivityId(), dto.getGoodsId(), userId, e);
+
+            throw new BizException(ResultCodeEnum.SECKILL_SYSTEM_BUSY);
+        } catch (ExecutionException e) { // 线程内部执行错误，业务异常需要原样抛出
+            Throwable cause = e.getCause();
+
+            if (cause instanceof BizException bizException) {
+                throw bizException;
+            }
+            if (cause instanceof RuntimeException runtimeException) {
+                throw runtimeException;
+            }
+            throw new IllegalStateException("秒杀下单任务执行失败", cause);
+        }
+    }
+
+    private DoSeckillRspVO doSeckillInternal(DoSeckillReqDTO dto, Long userId) {
         // 活动 ID
         Long activityId = dto.getActivityId();
         // 商品 ID
         Long goodsId = dto.getGoodsId();
 
         // 1. 获取当前登录用户 ID
-        long userId = StpUtil.getLoginIdAsLong();
         log.info("==> 当前登录用户 ID：{}", userId);
+
+        // 校验秒杀令牌
+        checkSeckillToken(activityId, goodsId, userId, dto.getToken());
 
         // 应用层锁：防止同一用户并发重复下单
         // 构建锁 Key "userId:activityId:goodsId"
@@ -426,6 +483,156 @@ public class OrderServiceImpl implements OrderService {
                 .goodsName(order.getGoodsName())
                 .goodsImg(order.getGoodsImg())
                 .seckillPrice(order.getSeckillPrice())
+                .build();
+    }
+
+    /**
+     * 生成秒杀令牌
+     */
+    private String generateSeckillToken() {
+        // 使用 SecureRandom 生成 32 字节随机数，尽量让令牌无规律，防止被猜测到
+        byte[] bytes = new byte[32];
+        SECKILL_TOKEN_RANDOM.nextBytes(bytes);
+
+        // 转成字符串
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    }
+
+    /**
+     * 校验秒杀令牌
+     *
+     * @param activityId 活动 ID
+     * @param goodsId    商品 ID
+     * @param userId     用户 ID
+     * @param token      请求携带的秒杀令牌
+     */
+    private void checkSeckillToken(Long activityId, Long goodsId, Long userId, String token) {
+        // 构建当前用户、当前活动、当前商品对应的令牌 Key
+        String tokenKey = RedisKeyConstants.buildSeckillOrderTokenKey(activityId, goodsId, userId);
+
+        // 通过 Lua 脚本，来原子型的完成 “比对令牌 + 删除令牌”
+        Long result = stringRedisTemplate.execute(seckillCheckTokenScript, List.of(tokenKey), token);
+        if (Objects.isNull(result)) {
+            throw new IllegalStateException("执行秒杀令牌校验 Lua 脚本失败");
+        }
+
+        // 返回 0，表示令牌不存在、已过期、已被使用过，或者请求中的令牌不正确
+        if (!Objects.equals(result, 1L)) {
+            log.warn("==> 秒杀令牌校验失败, userId：{}, activityId：{}, goodsId：{}, tokenKey：{}",
+                    userId, activityId, goodsId, tokenKey);
+            throw new BizException(ResultCodeEnum.SECKILL_TOKEN_INVALID);
+        }
+
+        log.info("==> 秒杀令牌校验通过并删除, userId：{}, activityId：{}, goodsId：{}, tokenKey：{}",
+                userId, activityId, goodsId, tokenKey);
+    }
+
+    /**
+     * 获取秒杀令牌
+     *
+     * @param reqDTO
+     * @return
+     */
+    @Override
+    public GetSeckillTokenRspVO getSeckillToken(GetSeckillTokenReqDTO reqDTO) {
+        // 活动 ID
+        Long activityId = reqDTO.getActivityId();
+        // 商品 ID
+        Long goodsId = reqDTO.getGoodsId();
+        // 当前登录用户 ID
+        long userId = StpUtil.getLoginIdAsLong();
+
+        // 从 Redis 中查询秒杀商品元数据，确认该活动商品已经预热
+        String redisKey = RedisKeyConstants.buildSeckillActivityGoodsMetaKey(activityId, goodsId);
+
+        String cachedValue = stringRedisTemplate.opsForValue().get(redisKey);
+
+        if (StrUtil.isBlank(cachedValue)) {
+            log.error("==> 秒杀下单入口元数据未预热, key：{}", redisKey);
+            throw new IllegalStateException("秒杀下单入口元数据未预热，请先预热活动");
+        }
+
+        SeckillActivityGoodsMetaDTO activityGoodsMetaDTO = JsonUtils.parseObject(cachedValue, SeckillActivityGoodsMetaDTO.class);
+
+        // 获取令牌前，先校验活动时间，避免活动未开始，或已结束时继续发放令牌
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isBefore(activityGoodsMetaDTO.getBeginTime())) {
+            throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_NOT_STARTED);
+        }
+
+        if (!now.isBefore(activityGoodsMetaDTO.getEndTime())) {
+            throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_ENDED);
+        }
+
+        // 构建秒杀令牌 Key
+        String tokenKey = RedisKeyConstants.buildSeckillOrderTokenKey(activityId, goodsId, userId);
+        // 构建令牌大闸 Key
+        String tokenGateKey = RedisKeyConstants.buildSeckillTokenGateKey(activityId, goodsId);
+        // 先生成一个候选秒杀令牌，至于是否写入 Redis，在 Lua 脚本中去原子判断
+        String candidateToken = generateSeckillToken();
+
+        // 执行 Lua 脚本
+        String tokenGateResult = stringRedisTemplate.execute(seckillTokenGateScript, List.of(tokenKey, tokenGateKey),
+                candidateToken, String.valueOf(RedisKeyConstants.SECKILL_ORDER_TOKEN_TTL_SECONDS));
+
+        return buildTokenGateResponse(tokenGateResult, userId, activityId, goodsId, tokenKey, tokenGateKey);
+    }
+
+    /**
+     * 解析秒杀令牌剩余过期时间
+     */
+    private Long resolveTokenExpireSeconds(Long expireSeconds) {
+        if (Objects.isNull(expireSeconds) || expireSeconds <= 0) {
+            return RedisKeyConstants.SECKILL_ORDER_TOKEN_TTL_SECONDS;
+        }
+        return expireSeconds;
+    }
+
+    /**
+     * 构建秒杀令牌大闸响应
+     */
+    private GetSeckillTokenRspVO buildTokenGateResponse(String tokenGateResult, Long userId, Long activityId,
+                                                        Long goodsId, String tokenKey, String tokenGateKey) {
+        if (StrUtil.isBlank(tokenGateResult)) {
+            throw new IllegalStateException("执行秒杀令牌大闸 Lua 脚本失败");
+        }
+
+        // 分割 Lua 执行结果
+        String[] resultArr = tokenGateResult.split("\\|", -1);
+        if (resultArr.length != 3) {
+            throw new IllegalStateException("秒杀令牌大闸 Lua 脚本返回格式错误：" + tokenGateResult);
+        }
+
+        // 返回码
+        Long resultCode = Long.valueOf(resultArr[0]);
+        // 秒杀令牌
+        String token = resultArr[1];
+        // 过期时间
+        Long expireSeconds = Long.valueOf(resultArr[2]);
+
+        if (Objects.equals(resultCode, -1L)) {
+            log.error("==> 秒杀令牌大闸未预热, key: {}", tokenGateKey);
+            throw new IllegalStateException("秒杀令牌大闸未预热，请先预热活动");
+        }
+
+        if (Objects.equals(resultCode, 0L)) {
+            log.info("==> 秒杀令牌大闸名额已发完, key: {}", tokenGateKey);
+            throw new BizException(ResultCodeEnum.SECKILL_TOKEN_GATE_EMPTY);
+        }
+
+        if (Objects.equals(resultCode, 2L)) {
+            log.info("==> 当前用户已存在有效秒杀令牌, userId: {}, activityId: {}, goodsId: {}, tokenKey: {}",
+                    userId, activityId, goodsId, tokenKey);
+        } else if (Objects.equals(resultCode, 1L)) {
+            log.info("==> 生成秒杀令牌, userId: {}, activityId: {}, goodsId: {}, tokenKey: {}",
+                    userId, activityId, goodsId, tokenKey);
+        } else {
+            throw new IllegalStateException("秒杀令牌大闸 Lua 脚本返回未知结果码：" + resultCode);
+        }
+
+        return GetSeckillTokenRspVO.builder()
+                .token(token)
+                .expireSeconds(resolveTokenExpireSeconds(expireSeconds))
                 .build();
     }
 }

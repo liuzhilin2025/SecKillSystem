@@ -17,10 +17,12 @@ import com.practice.flashsale.goods.model.dto.FindSeckillGoodsListReqDTO;
 import com.practice.flashsale.goods.model.vo.FindSeckillGoodsDetailRspVO;
 import com.practice.flashsale.goods.service.GoodsService;
 import com.practice.flashsale.goods.model.vo.FindSeckillGoodsListRspVO;
+import com.practice.flashsale.goods.utils.SeckillGoodsStockUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +69,12 @@ public class GoodsServiceImpl implements GoodsService {
     private Cache<String, String> goodsDetailLocalCache;
 
     /**
+     * 秒杀令牌大闸放大系数
+     */
+    @Value("${seckill.token-gate.multiplier}")
+    private Integer seckillTokenGateMultiplier;
+
+    /**
      * 处理缓存命中的商品列表数据: 反序列化 → 补充库存 → 重新计算活动状态
      *
      * @param redisJsonValue
@@ -78,7 +86,7 @@ public class GoodsServiceImpl implements GoodsService {
         List<FindSeckillGoodsListRspVO> cachedList = JsonUtils
                 .parseArray(redisJsonValue, FindSeckillGoodsListRspVO.class);
 
-        // 库存高频变化，缓存中不保证实时，命中后回源补齐
+        // 设置库存字段值（从 Redis 中获取实时库存）
         supplementStock(cachedList, activityId);
 
         // 活动状态依赖当前时间，用缓存里的活动时间实时重算（判空，防止缓存为空数组时越界）
@@ -203,6 +211,10 @@ public class GoodsServiceImpl implements GoodsService {
             rspVOS.add(rspVO);
         }
 
+        // DB 中的 seckill_stock 只是兜底值
+        // 活动期间页面展示的实时库存，仍然优先从 Redis 秒杀库存 Key 中组合
+        supplementStock(rspVOS, activityId);
+
         // 将商品列表写入 Redis 缓存和本地缓存
         log.info("==> 商品列表缓存未命中，将数据写入 Redis 和本地缓存中，Key：{}", redisKey);
         // 写入本地缓存
@@ -225,26 +237,47 @@ public class GoodsServiceImpl implements GoodsService {
             return;
         }
 
-        // 1. 库存回源：按活动 ID 只查一次，拿到最新剩余库存
-        List<SeckillGoods> seckillGoodsList = seckillGoodsMapper.selectList(
-                Wrappers.<SeckillGoods>lambdaQuery().eq(SeckillGoods::getActivityId, activityId));
-        if (CollUtil.isEmpty(seckillGoodsList)) {
-            return;
-        }
+        // 批量构建秒杀库存 Key， 后面用于 MGET 一次性读取库存数据
+        List<String> stockKeys = cachedList.stream()
+                .map(item -> RedisKeyConstants.buildSeckillStockKey(activityId, item.getGoodsId()))
+                .toList();
 
-        Map<Long, Integer> stockMap = new HashMap<>(seckillGoodsList.size());
-        for (SeckillGoods goods : seckillGoodsList) {
-            stockMap.put(goods.getId(), goods.getSeckillStock());
-        }
-
-        // 2. 用数据库里的最新库存覆盖缓存值
-        for (FindSeckillGoodsListRspVO rspVO : cachedList) {
-            Integer seckillStock = stockMap.get(rspVO.getId());
-            if (Objects.nonNull(seckillStock)) {
-                rspVO.setSeckillStock(seckillStock);
-            }
+        // multiGet() 对应 Redis 的批量读取命令，可以一次传入多个 Key，减少网络往返次数
+        List<String> stockValues = stringRedisTemplate.opsForValue().multiGet(stockKeys);
+        for (int i = 0; i < cachedList.size(); i++) {
+            FindSeckillGoodsListRspVO rspVO = cachedList.get(i);
+            String stockValue = getValue(stockValues, i);
+            rspVO.setSeckillStock(SeckillGoodsStockUtils.resolveDisplayStock(stockValue, rspVO.getSeckillStock()));
         }
     }
+
+    /**
+     * 安全获取列表指定下标的值
+     *
+     * @param values Redis 批量查询结果
+     * @param index  下标
+     * @return 指定下标对应的值
+     */
+    private String getValue(List<String> values, int index) {
+        if (Objects.isNull(values) || index >= values.size()) {
+            return null;
+        }
+        return values.get(index);
+    }
+
+    /**
+     * 实时补充商品详情中的库存字段
+     */
+    private void supplementStock(FindSeckillGoodsDetailRspVO rspVO, Long activityId, Long goodsId) {
+
+        // 从 Redis 中查询库存
+        String stockKey = RedisKeyConstants.buildSeckillStockKey(activityId, goodsId);
+        String stockValue = stringRedisTemplate.opsForValue().get(stockKey);
+
+        // 对返参 VO 设置库存值
+        rspVO.setSeckillStock(SeckillGoodsStockUtils.resolveDisplayStock(stockValue, rspVO.getSeckillStock()));
+    }
+
 
     /**
      * 商品列表写入 Redis 缓存（TTL 加随机抖动，防止同一时刻批量失效）
@@ -337,15 +370,8 @@ public class GoodsServiceImpl implements GoodsService {
         FindSeckillGoodsDetailRspVO cachedDetail = JsonUtils
                 .parseObject(redisJsonValue, FindSeckillGoodsDetailRspVO.class);
 
-        // 设置库存字段值（因为库存变化频繁，需要从数据库查最新的）
-        SeckillGoods seckillGoods = seckillGoodsMapper.selectOne(
-                Wrappers.<SeckillGoods>lambdaQuery()
-                        .eq(SeckillGoods::getActivityId, activityId)
-                        .eq(SeckillGoods::getGoodsId, goodsId)
-        );
-        if (Objects.nonNull(seckillGoods)) {
-            cachedDetail.setSeckillStock(seckillGoods.getSeckillStock());
-        }
+        // 设置库存字段值（从 Redis 中获取实时库存）
+        supplementStock(cachedDetail, activityId, goodsId);
 
         // 实时重新计算活动状态
         ActivityStatusEnum activityStatusEnum = calculateActivityStatus(
@@ -481,6 +507,9 @@ public class GoodsServiceImpl implements GoodsService {
         if (Objects.nonNull(goodsDetail)) {
             rspVO.setGoodsDetail(goodsDetail.getDetailContent());
         }
+
+        // 缓存未命中时，也要优先组合 Redis 实时库存，避免返回 DB 中的库存快照
+        supplementStock(rspVO, activityId, goodsId);
 
         // 将商品详情写入 Redis 缓存和本地缓存
         log.info("==> 商品详情缓存未命中，将数据写入 Redis 和本地缓存，key：{}", redisKey);
@@ -679,8 +708,24 @@ public class GoodsServiceImpl implements GoodsService {
             stringRedisTemplate.opsForValue().set(stockKey, String.valueOf(seckillGoods.getSeckillStock()),
                     ttlSeconds, TimeUnit.SECONDS);
 
+            // 库存既然被重新预热，说明可以重新开抢，必须清掉历史遗留的售罄标记，
+            // 否则后续请求会被脏标记拦截，导致库存还有却提示已售罄
+            String soldOutKey = RedisKeyConstants.buildSeckillSoldOutKey(activityId, seckillGoods.getGoodsId());
+            stringRedisTemplate.delete(soldOutKey);
+
             log.info("==> 预热秒杀库存成功, key：{}, stock：{}, TTL：{}s",
                     stockKey, seckillGoods.getSeckillStock(), ttlSeconds);
+
+            // 预热秒杀令牌大闸：大闸令牌数量 = 秒杀库存 * 放大系数
+            String tokenGateKey = RedisKeyConstants.buildSeckillTokenGateKey(activityId, seckillGoods.getGoodsId());
+
+            long tokenGateCount = (long) seckillGoods.getSeckillStock() * seckillTokenGateMultiplier;
+
+            stringRedisTemplate.opsForValue().set(tokenGateKey, String.valueOf(tokenGateCount),
+                    ttlSeconds, TimeUnit.SECONDS);
+
+            log.info("==> 预热秒杀令牌大闸成功, key：{}, tokenCount：{}, multiplier：{}, TTL：{}s",
+                    tokenGateKey, tokenGateCount, seckillTokenGateMultiplier, ttlSeconds);
         }
 
         return seckillGoodsList.size();

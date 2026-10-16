@@ -2,15 +2,20 @@ package com.practice.flashsale.order.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.practice.flashsale.common.aspect.ApiOperationLog;
+import com.practice.flashsale.common.utils.IpUtils;
 import com.practice.flashsale.common.utils.Result;
+import com.practice.flashsale.order.aspect.SeckillRateLimit;
 import com.practice.flashsale.order.model.dto.DoSeckillReqDTO;
 import com.practice.flashsale.order.model.dto.FindSeckillOrderResultReqDTO;
+import com.practice.flashsale.order.model.dto.GetSeckillTokenReqDTO;
 import com.practice.flashsale.order.model.dto.SubscribeSeckillOrderResultReqDTO;
 import com.practice.flashsale.order.model.vo.DoSeckillRspVO;
 import com.practice.flashsale.order.model.vo.FindSeckillOrderResultRspVO;
+import com.practice.flashsale.order.model.vo.GetSeckillTokenRspVO;
 import com.practice.flashsale.order.service.OrderService;
 import com.practice.flashsale.order.service.SeckillOrderResultNotifyService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -38,6 +43,18 @@ public class OrderController {
     private SeckillOrderResultNotifyService seckillOrderResultNotifyService;
 
     /**
+     * 获取秒杀令牌
+     *
+     * @param reqDTO
+     * @return
+     */
+    @PostMapping("/token")
+    @ApiOperationLog(description = "获取秒杀令牌")
+    public Result<GetSeckillTokenRspVO> getSeckillToken(@RequestBody @Validated GetSeckillTokenReqDTO reqDTO) {
+        return Result.success(orderService.getSeckillToken(reqDTO));
+    }
+
+    /**
      * 秒杀下单
      *
      * @param dto
@@ -45,6 +62,7 @@ public class OrderController {
      */
     @PostMapping
     @ApiOperationLog(description = "秒杀下单")
+    @SeckillRateLimit(userMaxCount = 5, userWindowSeconds = 10, ipMaxCount = 50, ipWindowSeconds = 10)
     public Result<DoSeckillRspVO> doSeckill(@RequestBody @Validated DoSeckillReqDTO dto) {
         return Result.success(orderService.doSeckill(dto));
     }
@@ -75,4 +93,5 @@ public class OrderController {
         long userId = StpUtil.getLoginIdAsLong();
         return seckillOrderResultNotifyService.subscribe(userId, reqDTO.getOrderNo());
     }
+
 }

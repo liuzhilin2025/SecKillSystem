@@ -5,7 +5,10 @@ D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flash
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\config\LocalCacheConfig.java
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\config\MybatisPlusConfig.java
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\config\PasswordEncoderConfig.java
+D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\config\RabbitMQConfig.java
+D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\config\RabbitMQPublisherConfirmConfig.java
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\config\RedisConfig.java
+D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\config\RedissonConfig.java
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\config\SaTokenConfig.java
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\config\ThreadPoolConfig.java
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\constant\DateConstants.java
@@ -29,6 +32,10 @@ D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flash
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\mapper\SeckillGoodsMapper.java
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\mapper\SeckillOrderMapper.java
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\mapper\UserMapper.java
+D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\model\dto\SeckillActivityGoodsMetaDTO.java
+D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\mq\MessagePublishFailureHandler.java
+D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\utils\DateTimeUtils.java
+D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\utils\IpUtils.java
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\utils\JsonUtils.java
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\utils\NicknameUtils.java
 D:\java_practice\FlashSaleSystem\seckill-common\src\main\java\com\practice\flashsale\common\utils\Result.java
