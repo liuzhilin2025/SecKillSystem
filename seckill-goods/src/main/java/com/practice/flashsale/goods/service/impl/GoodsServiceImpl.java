@@ -21,6 +21,7 @@ import com.practice.flashsale.goods.utils.SeckillGoodsStockUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBloomFilter;
+import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -351,7 +352,7 @@ public class GoodsServiceImpl implements GoodsService {
     private void cacheNullValue(String redisKey) {
         // 当数据库中查不到数据时，往 Redis 写入一个空值标记，短时间内不再查 DB
         stringRedisTemplate.opsForValue().set(redisKey, RedisKeyConstants.NULL_CACHE_VALUE,
-                        RedisKeyConstants.NULL_CACHE_TTL_MINUTES, TimeUnit.MINUTES);
+                RedisKeyConstants.NULL_CACHE_TTL_MINUTES, TimeUnit.MINUTES);
 
         log.info("==> 缓存空值，防止穿透, redisKey: {}, TTL: {}min", redisKey, RedisKeyConstants.NULL_CACHE_TTL_MINUTES);
     }
@@ -524,12 +525,42 @@ public class GoodsServiceImpl implements GoodsService {
 
     /**
      * 预热指定活动的商品缓存
+     * 外层：负责抢锁、释放锁
      *
      * @param activityId 活动 ID
      * @return 已预热过的商品数量
      */
     @Override
     public int preheatActivityGoods(Long activityId) {
+        // 构建分布式锁 Key
+        String lockKey = RedisKeyConstants.buildSeckillActivityPreheatLockKey();
+        // 构建分布式锁对象
+        RLock lock = redissonClient.getLock(lockKey);
+
+        // 若获取锁失败，说明活动正在预热中，直接抛出业务异常
+        if (!lock.tryLock()) {
+            log.warn("==> 活动缓存正在预热中，本次请求跳过，activityId：{}, lockKey：{}", activityId, lockKey);
+            throw new BizException(ResultCodeEnum.SECKILL_ACTIVITY_PREHEATING);
+        }
+
+        // 获取锁成功，则执行预热逻辑
+        try {
+            return doPreheatActivityGoods(activityId);
+        } finally {
+            // 只释放当前线程持有的锁
+            if (lock.isHeldByCurrentThread()) { // 确认当前线程确实持有这把锁，避免误释放别的线程或别的实例持有的锁
+                lock.unlock();
+            }
+        }
+    }
+
+    /**
+     * 执行活动商品缓存预热
+     *
+     * @param activityId
+     * @return
+     */
+    private int doPreheatActivityGoods(Long activityId) {
         // 记录开始时间，用于最后打印耗时
         long start = System.currentTimeMillis();
         log.info("==> 开始预热活动商品缓存, activityId: {}", activityId);

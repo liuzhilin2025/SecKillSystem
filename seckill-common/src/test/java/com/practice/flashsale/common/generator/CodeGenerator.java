@@ -22,7 +22,7 @@ public class CodeGenerator {
                     + "&useSSL=false&allowPublicKeyRetrieval=true"
                     + "&remarks=true&useInformationSchema=true";   // 这两个参数让生成器能读到表注释
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "AdS27KHe5dwB";
+    private static final String PASSWORD = "root";
 
     /** 输出目录（路径写死最简单，按你的实际路径改） */
     private static final String JAVA_DIR =
@@ -64,7 +64,7 @@ public class CodeGenerator {
                 // ---------- 策略配置 ----------
                 .strategyConfig(builder -> builder
                                 // 要生成的表
-                                .addInclude("t_user")
+                                .addInclude("t_seckill_order_send_compensation")
                                 // 生成时去掉表前缀：t_user -> User
                                 .addTablePrefix("t_")
 

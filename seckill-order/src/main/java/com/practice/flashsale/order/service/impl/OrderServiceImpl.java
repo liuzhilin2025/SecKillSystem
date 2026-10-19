@@ -23,11 +23,13 @@ import com.practice.flashsale.order.model.vo.FindSeckillOrderResultRspVO;
 import com.practice.flashsale.order.model.vo.GetSeckillTokenRspVO;
 import com.practice.flashsale.order.mq.SeckillOrderMessageSender;
 import com.practice.flashsale.order.service.OrderService;
+import com.practice.flashsale.order.service.SeckillCaptchaService;
 import com.practice.flashsale.order.service.SeckillOrderResultNotifyService;
 import com.practice.flashsale.order.service.SeckillStockService;
 import com.practice.flashsale.order.utils.OrderLockUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.AmqpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DuplicateKeyException;
@@ -97,6 +99,9 @@ public class OrderServiceImpl implements OrderService {
      * 秒杀令牌大闸 Lua 脚本
      */
     private final DefaultRedisScript<String> seckillTokenGateScript;
+
+    @Autowired
+    private SeckillCaptchaService seckillCaptchaService;
 
     /**
      * 初始化秒杀令牌校验并删除 Lua 脚本
@@ -284,10 +289,19 @@ public class OrderServiceImpl implements OrderService {
         saveOrderStatus(userId, orderNo, OrderStatusEnum.PROCESSING.getStatus());
 
         // 发送 MQ，内部会携带 CorrelationData(orderNo)，方便生产者确认回调定位消息
-        boolean isSendSuccess = seckillOrderMessageSender.send(seckillOrderMqDTO);
+        // Spring Retry 重试耗尽后, 异常由 SeckillOrderMessageSender 中的 @Recover 兜底方法接住
+        // 失败消息会被登记到补偿表，由补偿任务重发
+        boolean isSendSuccess;
+        try {
+            isSendSuccess = seckillOrderMessageSender.send(seckillOrderMqDTO);
+        } catch (Exception e) {
+            // 多次重试后, 仍发送失败
+            log.error("==> 秒杀下单消息发送失败, orderNo: {}", orderNo, e);
+            isSendSuccess = false;
+        }
 
         if (!isSendSuccess) {
-            log.warn("==> 秒杀下单消息发送结果未知，订单保持处理中等待后续确认, orderNo：{}", orderNo);
+            log.warn("==> 秒杀下单消息发送失败，已进入补偿链路，订单保持处理中, orderNo：{}", orderNo);
         }
 
         // 立即响应 “处理中”，返回 orderNo + status(-1 处理中)，不再干等那 ~100ms 的写库操作；
@@ -541,6 +555,9 @@ public class OrderServiceImpl implements OrderService {
         Long goodsId = reqDTO.getGoodsId();
         // 当前登录用户 ID
         long userId = StpUtil.getLoginIdAsLong();
+
+        // 获取秒杀令牌前，先校验行为验证码，避免脚本直接高频刷新 token
+        seckillCaptchaService.verify(reqDTO.getCaptchaId());
 
         // 从 Redis 中查询秒杀商品元数据，确认该活动商品已经预热
         String redisKey = RedisKeyConstants.buildSeckillActivityGoodsMetaKey(activityId, goodsId);

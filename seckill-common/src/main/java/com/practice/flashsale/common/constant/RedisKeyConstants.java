@@ -190,6 +190,18 @@ public class RedisKeyConstants {
     }
 
     /**
+     * 活动缓存预热分布式锁 Key
+     */
+    public static final String SECKILL_ACTIVITY_PREHEAT_LOCK_KEY = "seckill:lock:activity:preheat";
+
+    /**
+     * 构建活动缓存预热分布式锁 Key
+     */
+    public static String buildSeckillActivityPreheatLockKey() {
+        return SECKILL_ACTIVITY_PREHEAT_LOCK_KEY;
+    }
+
+    /**
      * 根据活动结束时间动态计算缓存 TTL（秒）
      *
      * 公式：TTL = (活动结束时间 - 当前时间) + 安全缓冲时间

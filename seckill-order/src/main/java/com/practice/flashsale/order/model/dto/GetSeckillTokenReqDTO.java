@@ -32,4 +32,9 @@ public class GetSeckillTokenReqDTO {
     @NotNull(message = "商品 ID 不能为空")
     @Positive(message = "商品 ID 不合法")
     private Long goodsId;
+
+    /**
+     * 行为验证码二次校验 ID
+     */
+    private String captchaId;
 }
