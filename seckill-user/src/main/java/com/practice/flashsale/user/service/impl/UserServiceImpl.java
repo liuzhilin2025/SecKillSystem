@@ -61,29 +61,53 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private Executor bizExecutor;
 
     // 常量
-    /** Redis 中验证码的 Key 前缀 */
+    /**
+     * Redis 中验证码的 Key 前缀
+     */
     private static final String VERIFY_CODE_KEY_PREFIX = "verify_code:";
-    /** Redis 中发送频率限制的 Key 前缀 */
+    /**
+     * Redis 中发送频率限制的 Key 前缀
+     */
     private static final String VERIFY_CODE_LIMIT_KEY_PREFIX = "verify_code_limit:";
-    /** 验证码有效期：5 分钟 */
+    /**
+     * 验证码有效期：5 分钟
+     */
     private static final long VERIFY_CODE_EXPIRE_MINUTES = 5;
-    /** 同一手机号发送间隔：60 秒 */
+    /**
+     * 同一手机号发送间隔：60 秒
+     */
     private static final long VERIFY_CODE_LIMIT_SECONDS = 60;
-    /** 验证码长度 */
+    /**
+     * 验证码长度
+     */
     private static final int VERIFY_CODE_LENGTH = 6;
-    /** Redis 中每日发送次数限制的 Key 前缀 */
+    /**
+     * Redis 中每日发送次数限制的 Key 前缀
+     */
     private static final String VERIFY_CODE_DAILY_LIMIT_KEY_PREFIX = "verify_code_daily:";
-    /** 每日发送次数上限 */
+    /**
+     * 每日发送次数上限
+     */
     private static final int VERIFY_CODE_DAILY_LIMIT = 10;
-    /** Redis 中登录失败次数的 Key 前缀 */
+    /**
+     * Redis 中登录失败次数的 Key 前缀
+     */
     private static final String LOGIN_FAIL_COUNT_KEY_PREFIX = "login_fail_count:";
-    /** 登录失败次数上限（超过此值则临时锁定账号） */
+    /**
+     * 登录失败次数上限（超过此值则临时锁定账号）
+     */
     private static final int LOGIN_FAIL_MAX_COUNT = 5;
-    /** 账号临时锁定时间（分钟） */
+    /**
+     * 账号临时锁定时间（分钟）
+     */
     private static final long LOGIN_LOCK_MINUTES = 30L;
-    /** Redis 中行为验证码 ID 一次性标记的 Key 前缀（防同一个 captchaId 被重放） */
+    /**
+     * Redis 中行为验证码 ID 一次性标记的 Key 前缀（防同一个 captchaId 被重放）
+     */
     private static final String CAPTCHA_USED_KEY_PREFIX = "captcha_used:";
-    /** 行为验证码应用（tianai-captcha） */
+    /**
+     * 行为验证码应用（tianai-captcha）
+     */
     private final ImageCaptchaApplication imageCaptchaApplication;
 
 
@@ -91,11 +115,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    /** 验证码校验 Lua 脚本 */
+    /**
+     * 验证码校验 Lua 脚本
+     */
     private final DefaultRedisScript<Long> checkAndDeleteVerifyCodeScript;
-    /** 登录失败次数 Lua 脚本 */
+    /**
+     * 登录失败次数 Lua 脚本
+     */
     private final DefaultRedisScript<Long> checkAndIncrementLoginFailScript;
-    /** 每日发送次数限制 Lua 脚本 */
+    /**
+     * 每日发送次数限制 Lua 脚本
+     */
     private final DefaultRedisScript<Long> checkAndIncrementDailyLimitScript;
 
     /**
@@ -134,13 +164,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         // 4. 组装实体，密码 BCrypt 加密
-        User user = new User();
-        user.setNickname(NicknameUtils.generate());
-        user.setMobile(dto.getMobile());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setStatus(UserStatusEnum.ENABLED.getCode());
-        user.setCreateTime(LocalDateTime.now());
-        user.setUpdateTime(LocalDateTime.now());
+        User user = User.builder()
+                .nickname(NicknameUtils.generate())
+                .mobile(dto.getMobile())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .status(UserStatusEnum.ENABLED.getCode())
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .build();
 
         // 5. 落库，唯一索引兜底
         try {
@@ -193,16 +224,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 5. 获取 SaToken 生成的 Token
         String token = StpUtil.getTokenValue();
 
-        // 6. 构建用户信息
-        LoginUserRspVO.UserInfo userInfo = new LoginUserRspVO.UserInfo();
-        userInfo.setId(user.getId());
-        userInfo.setNickname(user.getNickname());
-        userInfo.setAvatar(user.getAvatar());
+        // “套娃式” 链式构建(加了Lombok的 @Builder 注解)
+        LoginUserRspVO vo = LoginUserRspVO.builder()
+                .token(token)
+                .userInfo(
+                        LoginUserRspVO.UserInfo.builder()
+                                .id(user.getId())
+                                .nickname(user.getNickname())
+                                .avatar(user.getAvatar())
+                                .build()
+                )
+                .build();
 
-        // 7. 组装响应
-        LoginUserRspVO vo = new LoginUserRspVO();
-        vo.setToken(token);
-        vo.setUserInfo(userInfo);
 
         log.info("用户登录成功, userId={}, mobile={}", user.getId(), user.getMobile());
         return vo;
@@ -217,6 +250,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     private void checkPassword(String rawPassword, String encodedPassword, String mobile) {
         // 1. 判空：passwordEncoder.matches(null, ...) 会抛 IllegalArgumentException
+        // StringUtils.hasText() 不仅要求字符串不能为 null，而且不能是空字符串 ""，甚至不能是只有空格、制表符、换行符的“空白字符串”
         if (!StringUtils.hasText(rawPassword)) {
             // 登录失败次数 +1
             addLoginFailCount(mobile);
@@ -339,7 +373,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         // 执行 Lua 脚本：达上限返回 -1；未达上限返回累加后的值
         Long dailyCount = stringRedisTemplate.execute(checkAndIncrementDailyLimitScript,
-                Collections.singletonList(dailyLimitKey),
+                Collections.singletonList(dailyLimitKey), // 表示只有一个Key
                 String.valueOf(VERIFY_CODE_DAILY_LIMIT),
                 String.valueOf(secondsUntilMidnight));
 

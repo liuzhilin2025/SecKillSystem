@@ -24,7 +24,7 @@ import java.time.YearMonth;
 import java.util.TimeZone;
 
 /**
- * @Author: 犬小哈
+ * @Author: 沃淇淋
  * @Date: 2026/10/8 09:52
  * @Version: v1.0.0
  * @Description: 配置自定义的 Jackson
@@ -38,10 +38,8 @@ public class JacksonConfig {
         ObjectMapper objectMapper = new ObjectMapper();
 
         // 忽略未知属性
-        objectMapper
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper
-                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         // 设置凡是为 null 的字段，返参中均不返回，请根据项目组约定是否开启
         // objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 

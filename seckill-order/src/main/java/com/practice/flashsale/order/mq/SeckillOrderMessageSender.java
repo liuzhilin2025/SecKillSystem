@@ -130,7 +130,7 @@ public class SeckillOrderMessageSender {
                 long delaySeconds = Math.min((long) INITIAL_RETRY_DELAY_SECONDS << nextRetryCount, MAX_RETRY_DELAY_SECONDS);
 
                 sendCompensationMapper.updateRetryPlan(orderNo, nextRetryCount,
-                                LocalDateTime.now().plusSeconds(delaySeconds), e.getMessage());
+                        LocalDateTime.now().plusSeconds(delaySeconds), e.getMessage());
 
                 log.warn("==> 发送失败补偿重发失败, 第 {} 次重试将于 {} 秒后再执行, orderNo: {}",
                         nextRetryCount, delaySeconds, orderNo);
