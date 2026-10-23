@@ -1,6 +1,7 @@
 package com.practice.flashsale.order.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.practice.flashsale.common.constant.RedisKeyConstants;
@@ -197,7 +198,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 秒杀下单逻辑
+     * 秒杀下单核心逻辑
      */
     private DoSeckillRspVO processSeckill(Long activityId, Long goodsId, long userId) {
         // 从 Redis 中查询秒杀商品元数据

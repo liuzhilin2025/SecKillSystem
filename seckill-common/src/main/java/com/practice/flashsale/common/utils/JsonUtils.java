@@ -10,7 +10,7 @@ import java.util.List;
 
 public class JsonUtils {
 
-    private static ObjectMapper OBJECT_MAPPER =new ObjectMapper();
+    private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     static {
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

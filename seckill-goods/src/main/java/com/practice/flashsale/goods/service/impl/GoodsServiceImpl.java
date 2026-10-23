@@ -2,6 +2,7 @@ package com.practice.flashsale.goods.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.practice.flashsale.common.constant.RedisKeyConstants;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -190,24 +192,25 @@ public class GoodsServiceImpl implements GoodsService {
         // 5. 组装响应数据
         List<FindSeckillGoodsListRspVO> rspVOS = new ArrayList<>();
         for (SeckillGoods seckillGoodsDO : seckillGoods) {
-            FindSeckillGoodsListRspVO rspVO = new FindSeckillGoodsListRspVO();
-            rspVO.setId(seckillGoodsDO.getId());
-            rspVO.setGoodsId(seckillGoodsDO.getGoodsId());
-            rspVO.setActivityId(seckillGoodsDO.getActivityId());
-            rspVO.setSeckillTitle(seckillGoodsDO.getSeckillTitle());
-            rspVO.setSeckillImg(seckillGoodsDO.getSeckillImg());
-            rspVO.setSeckillPrice(seckillGoodsDO.getSeckillPrice());
-            rspVO.setSeckillTotal(seckillGoodsDO.getSeckillTotal());
-            rspVO.setSeckillStock(seckillGoodsDO.getSeckillStock());
-            rspVO.setActivityStatus(activityStatusEnum.getStatus());
-            rspVO.setBeginTime(activity.getBeginTime());
-            rspVO.setEndTime(activity.getEndTime());
-
-            // 设置商品原价
+            // 【关键步骤】：因为原价是条件赋值的，我们要先把数据提取出来
             Goods goodsDO = goodsMap.get(seckillGoodsDO.getGoodsId());
-            if (Objects.nonNull(goodsDO)) {
-                rspVO.setGoodsPrice(goodsDO.getGoodsPrice());
-            }
+            BigDecimal goodsPrice = (goodsDO != null) ? goodsDO.getGoodsPrice() : null;
+
+            // 使用 Builder 链式构建，一气呵成！
+            FindSeckillGoodsListRspVO rspVO = FindSeckillGoodsListRspVO.builder()
+                    .id(seckillGoodsDO.getId())
+                    .goodsId(seckillGoodsDO.getGoodsId())
+                    .activityId(seckillGoodsDO.getActivityId())
+                    .seckillTitle(seckillGoodsDO.getSeckillTitle())
+                    .seckillImg(seckillGoodsDO.getSeckillImg())
+                    .seckillPrice(seckillGoodsDO.getSeckillPrice())
+                    .seckillTotal(seckillGoodsDO.getSeckillTotal())
+                    .seckillStock(seckillGoodsDO.getSeckillStock())
+                    .activityStatus(activityStatusEnum.getStatus())
+                    .beginTime(activity.getBeginTime())
+                    .endTime(activity.getEndTime())
+                    .goodsPrice(goodsPrice)
+                    .build();
 
             rspVOS.add(rspVO);
         }
@@ -486,28 +489,26 @@ public class GoodsServiceImpl implements GoodsService {
         ActivityStatusEnum activityStatusEnum = calculateActivityStatus(activity);
 
         // 7. 组装响应
-        FindSeckillGoodsDetailRspVO rspVO = new FindSeckillGoodsDetailRspVO();
-        rspVO.setId(seckillGoods.getId());
-        rspVO.setGoodsId(goods.getId());
-        rspVO.setActivityId(seckillGoods.getActivityId());
-        rspVO.setSeckillPrice(seckillGoods.getSeckillPrice());
-        rspVO.setSeckillTotal(seckillGoods.getSeckillTotal());
-        rspVO.setSeckillStock(seckillGoods.getSeckillStock());
-        rspVO.setActivityStatus(activityStatusEnum.getStatus());
-        rspVO.setBeginTime(activity.getBeginTime());
-        rspVO.setEndTime(activity.getEndTime());
-        rspVO.setGoodsImgs(goodsImgs);
+        String goodsName = (goods != null) ? goods.getGoodsName() : null;
+        BigDecimal goodsPrice = (goods != null) ? goods.getGoodsPrice() : null;
+        String detailContent = (goodsDetail != null) ? goodsDetail.getDetailContent() : null;
+        Long goodsID = (goods != null) ? goods.getId() : null;
 
-        // 设置商品基本信息
-        if (Objects.nonNull(goods)) {
-            rspVO.setGoodsName(goods.getGoodsName());
-            rspVO.setGoodsPrice(goods.getGoodsPrice());
-        }
-
-        // 设置商品详情 HTML
-        if (Objects.nonNull(goodsDetail)) {
-            rspVO.setGoodsDetail(goodsDetail.getDetailContent());
-        }
+        FindSeckillGoodsDetailRspVO rspVO = FindSeckillGoodsDetailRspVO.builder()
+                .id(seckillGoods.getId())
+                .goodsId(goodsID)
+                .activityId(seckillGoods.getActivityId())
+                .goodsName(goodsName)
+                .goodsPrice(goodsPrice)
+                .goodsDetail(detailContent)
+                .seckillPrice(seckillGoods.getSeckillPrice())
+                .seckillTotal(seckillGoods.getSeckillTotal())
+                .seckillStock(seckillGoods.getSeckillStock())
+                .activityStatus(activityStatusEnum.getStatus())
+                .beginTime(activity.getBeginTime())
+                .endTime(activity.getEndTime())
+                .goodsImgs(goodsImgs)
+                .build();
 
         // 缓存未命中时，也要优先组合 Redis 实时库存，避免返回 DB 中的库存快照
         supplementStock(rspVO, activityId, goodsId);
