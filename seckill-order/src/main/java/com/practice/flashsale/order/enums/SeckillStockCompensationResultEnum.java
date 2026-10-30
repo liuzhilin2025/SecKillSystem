@@ -15,7 +15,7 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum SeckillStockCompensationResultEnum {
 
-    SUCESS(1L, "库存回补成功"),
+    SUCCESS(1L, "库存回补成功"),
     USER_ORDER_MARK_NOT_EXIST(0L, "用户购买标记不存在或不属于当前订单"),
     STOCK_NOT_PREHEATED(-1L, "秒杀库存未预热");
 

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class RetryLogListener implements RetryListener {
 
     /**
+     * close() 回调方法
      * 整个重试流程结束时回调，无论最终成功还是失败
      */
     @Override
@@ -28,6 +29,7 @@ public class RetryLogListener implements RetryListener {
     }
 
     /**
+     * onError() 回调方法
      * 每一次尝试失败后回调
      */
     @Override

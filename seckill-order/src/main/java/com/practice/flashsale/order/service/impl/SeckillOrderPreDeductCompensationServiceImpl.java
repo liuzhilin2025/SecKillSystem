@@ -63,7 +63,7 @@ public class SeckillOrderPreDeductCompensationServiceImpl implements SeckillOrde
                 seckillOrderMqDTO.getActivityId(), seckillOrderMqDTO.getGoodsId(), seckillOrderMqDTO.getUserId(), seckillOrderMqDTO.getOrderNo());
 
         // 库存回补成功
-        if (Objects.equals(result, SeckillStockCompensationResultEnum.SUCESS)) {
+        if (Objects.equals(result, SeckillStockCompensationResultEnum.SUCCESS)) {
             // 设置订单状态为 “秒杀失败”，并 SSE 推送结果
             saveOrderFailedStatus(seckillOrderMqDTO);
 

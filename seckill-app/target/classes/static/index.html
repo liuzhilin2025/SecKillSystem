@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlashSale · 秒杀系统</title>
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="brand">
+        <span class="brand-mark">F</span>
+        <span class="brand-text">FLASH<em>SALE</em></span>
+        <span class="brand-sub">高并发秒杀系统</span>
+    </div>
+
+    <div class="topbar-actions">
+        <div class="field-inline">
+            <label for="activityIdInput">活动 ID</label>
+            <input id="activityIdInput" type="number" min="1" value="1">
+        </div>
+        <button class="btn btn-ghost" id="btnLoadList">加载活动</button>
+        <button class="btn btn-ghost" id="btnAdmin">预热管理</button>
+        <div class="user-box" id="userBox">
+            <button class="btn btn-primary" id="btnOpenLogin">登录 / 注册</button>
+        </div>
+    </div>
+</header>
+
+<main class="page">
+
+    <!-- 商品列表 -->
+    <section id="listView">
+        <div class="section-head">
+            <h1>限时秒杀</h1>
+            <div class="section-meta" id="listMeta">请先加载活动</div>
+        </div>
+        <div class="goods-grid" id="goodsGrid">
+            <div class="empty-state">
+                <div class="empty-icon"></div>
+                <p>输入活动 ID 后点击「加载活动」</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 商品详情 -->
+    <section id="detailView" hidden>
+        <button class="btn btn-back" id="btnBackToList">&larr; 返回列表</button>
+        <div class="detail-wrap" id="detailWrap"></div>
+    </section>
+
+</main>
+
+<!-- 登录 / 注册 -->
+<div class="modal-mask" id="loginModal" hidden>
+    <div class="modal">
+        <div class="modal-head">
+            <h3 id="loginTitle">登录</h3>
+            <button class="modal-close" data-close="loginModal">&times;</button>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-auth-tab="password">密码登录</button>
+            <button class="tab" data-auth-tab="code">验证码登录</button>
+            <button class="tab" data-auth-tab="register">注册</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-item">
+                <label>手机号</label>
+                <input id="authMobile" type="text" placeholder="请输入手机号" autocomplete="username">
+            </div>
+
+            <div class="form-item" data-auth-pane="password">
+                <label>密码</label>
+                <input id="authPassword" type="password" placeholder="请输入密码" autocomplete="current-password">
+            </div>
+
+            <div class="form-item" data-auth-pane="register">
+                <label>确认密码</label>
+                <input id="authConfirmPassword" type="password" placeholder="请再次输入密码" autocomplete="new-password">
+            </div>
+
+            <div class="form-item" data-auth-pane="code" data-auth-pane-register="1">
+                <label>短信验证码</label>
+                <div class="input-row">
+                    <input id="authVerifyCode" type="text" placeholder="6 位验证码">
+                    <button class="btn btn-ghost" id="btnSendCode">发送验证码</button>
+                </div>
+            </div>
+
+            <div class="form-tip" id="authTip"></div>
+
+            <button class="btn btn-primary btn-block" id="btnAuthSubmit">确 定</button>
+
+            <p class="modal-foot">
+                提示：验证码接口需要先通过滑块人机校验，验证码会打印在后端日志或由 Mock 发送器输出。
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- 滑块验证码 -->
+<div class="modal-mask" id="captchaModal" hidden>
+    <div class="modal modal-captcha">
+        <div class="modal-head">
+            <h3>安全验证</h3>
+            <button class="modal-close" data-close="captchaModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="captcha-tip">拖动下方滑块，将拼图移动到缺口位置</p>
+            <div class="captcha-stage" id="captchaStage">
+                <img class="captcha-bg" id="captchaBg" alt="captcha background">
+                <img class="captcha-piece" id="captchaPiece" alt="captcha piece">
+                <div class="captcha-loading" id="captchaLoading">加载中…</div>
+            </div>
+            <div class="captcha-slider" id="captchaSlider">
+                <div class="captcha-track"></div>
+                <div class="captcha-thumb" id="captchaThumb">&rarr;</div>
+                <div class="captcha-progress" id="captchaProgress"></div>
+                <span class="captcha-slider-text" id="captchaSliderText">按住滑块拖动</span>
+            </div>
+            <div class="captcha-foot">
+                <button class="btn btn-ghost" id="btnRefreshCaptcha">刷新</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 抢购 / 结果 -->
+<div class="modal-mask" id="seckillModal" hidden>
+    <div class="modal">
+        <div class="modal-head">
+            <h3>抢购进度</h3>
+            <button class="modal-close" data-close="seckillModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="order-no-row" id="orderNoRow" hidden>
+                <span class="order-no-label">订单号</span>
+                <code id="orderNoText"></code>
+            </div>
+
+            <ul class="steps" id="seckillSteps">
+                <li data-step="token">
+                    <span class="step-dot"></span>
+                    <div class="step-body"><b>获取秒杀令牌</b><i>验证码通过后领取一次性令牌</i></div>
+                </li>
+                <li data-step="submit">
+                    <span class="step-dot"></span>
+                    <div class="step-body"><b>提交订单</b><i>Redis Lua 原子预扣库存</i></div>
+                </li>
+                <li data-step="queue">
+                    <span class="step-dot"></span>
+                    <div class="step-body"><b>消息队列排队</b><i>异步落库，等待消费</i></div>
+                </li>
+                <li data-step="result">
+                    <span class="step-dot"></span>
+                    <div class="step-body"><b>最终结果</b><i>SSE 推送 / 轮询兜底</i></div>
+                </li>
+            </ul>
+
+            <div class="result-banner" id="resultBanner" hidden></div>
+            <div class="log-box" id="seckillLog"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 管理端：预热 -->
+<div class="modal-mask" id="adminModal" hidden>
+    <div class="modal">
+        <div class="modal-head">
+            <h3>缓存预热</h3>
+            <button class="modal-close" data-close="adminModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-desc">
+                预热会把活动商品写入 Redis 缓存、秒杀库存、令牌大闸与布隆过滤器。
+                注意：活动进行中有在途订单时重新预热会覆盖 Redis 库存，产生名额偏差。
+            </p>
+            <div class="form-item">
+                <label>活动 ID</label>
+                <input id="adminActivityId" type="number" min="1" value="1">
+            </div>
+            <button class="btn btn-primary btn-block" id="btnPreheat">执行预热</button>
+            <div class="form-tip" id="adminTip"></div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

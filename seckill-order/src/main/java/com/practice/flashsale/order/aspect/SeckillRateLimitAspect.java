@@ -98,8 +98,7 @@ public class SeckillRateLimitAspect {
 
         // 执行 Lua 脚本限流
         boolean ipAllowed = seckillRateLimitService.tryAcquire(ipRateLimitKey,
-                seckillRateLimit
-                        .ipMaxCount(), seckillRateLimit.ipWindowSeconds());
+                seckillRateLimit.ipMaxCount(), seckillRateLimit.ipWindowSeconds());
 
         // 如果 IP 维度超过阈值时，直接抛业务异常，不再进入秒杀主链路
         if (!ipAllowed) {
